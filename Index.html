@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Clichés World 🌍</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- Firebase -->
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, set, get, update, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+// ─── FIREBASE CONFIG ────────────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyAIbBzVRyHLJtWTB0gu8TtWna_slBzD1-M",
+  authDomain: "test-21fba.firebaseapp.com",
+  databaseURL: "https://test-21fba-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "test-21fba",
+  storageBucket: "test-21fba.firebasestorage.app",
+  messagingSenderId: "832861561652",
+  appId: "1:832861561652:web:7bd867c6834458bfd03b61"
+};
+// ────────────────────────────────────────────────────────────────────────────
+
+window.__FB_INIT__ = { initializeApp, getDatabase, ref, set, get, update, onValue, off, firebaseConfig };
+</script>
+
+<style>
+/* ════════════════════════════════════════════
+   DESIGN SYSTEM — Sombre / Editorial / Épicé
+════════════════════════════════════════════ */
+:root {
+  --bg:       #080612;
+  --surface:  #110e1f;
+  --card:     rgba(18,13,38,0.97);
+  --border:   rgba(255,107,0,0.18);
+  --border2:  rgba(255,255,255,0.07);
+  --saffron:  #FF6B00;
+  --amber:    #F5A623;
+  --gold:     #FFD060;
+  --cream:    #FFF3DC;
+  --mint:     #00D4A0;
+  --red:      #E5484D;
+  --pink:     #FF4D8D;
+  --muted:    rgba(255,243,220,0.35);
+  --radius:   18px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Texture de fond ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(255,107,0,.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(255,77,141,.06) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+
+/* Grain */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .6;
+}
+
+/* ── App shell ── */
+#app {
+  position: relative; z-index: 1;
+  min-height: 100dvh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding: 24px 16px 48px;
+}
+
+/* ── Screens ── */
+.screen { display: none; width: 100%; max-width: 520px; flex-direction: column; align-items: center; gap: 20px; }
+.screen.on { display: flex; animation: rise .3s cubic-bezier(.22,.68,0,1.2); }
+@keyframes rise { from { opacity:0; transform:translateY(12px) scale(.98); } to { opacity:1; transform:none; } }
+
+/* ── Logo ── */
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 8vw, 3.4rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--saffron) 0%, var(--amber) 45%, var(--gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1; letter-spacing: -.5px;
+  filter: drop-shadow(0 0 30px rgba(255,107,0,.3));
+}
+.logo-sub {
+  color: var(--muted); font-size: .72rem; letter-spacing: 3.5px;
+  text-transform: uppercase; text-align: center; margin-top: 5px;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 22px;
+  width: 100%;
+  box-shadow: 0 4px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.03) inset;
+  backdrop-filter: blur(14px);
+}
+
+/* ── Inputs ── */
+label { color: var(--amber); font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 8px; }
+
+input[type=text] {
+  width: 100%;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,107,0,.28);
+  border-radius: 12px;
+  padding: 14px 18px;
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem; font-weight: 500;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  -webkit-appearance: none;
+}
+input[type=text]:focus {
+  border-color: var(--saffron);
+  box-shadow: 0 0 0 3px rgba(255,107,0,.14);
+}
+input[type=text]::placeholder { color: rgba(255,243,220,.22); }
+
+/* ── Buttons ── */
+.btn {
+  font-family: 'DM Sans', sans-serif; font-weight: 700;
+  font-size: .88rem; letter-spacing: 1.2px; text-transform: uppercase;
+  padding: 15px 28px; border: none; border-radius: 50px;
+  cursor: pointer; transition: transform .15s, box-shadow .15s, opacity .15s;
+  white-space: nowrap;
+  -webkit-appearance: none;
+}
+.btn:active { transform: scale(.96); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--saffron), var(--amber));
+  color: #1a0a00;
+  box-shadow: 0 4px 20px rgba(255,107,0,.35);
+}
+.btn-primary:hover { box-shadow: 0 6px 28px rgba(255,107,0,.5); }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255,107,0,.35);
+  color: var(--amber);
+}
+.btn-ghost:hover { background: rgba(255,107,0,.08); }
+.btn-ghost:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ── Divider ── */
+.divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,107,0,.22), transparent); }
+
+/* ── Code display ── */
+.game-code-wrap {
+  background: linear-gradient(135deg, rgba(255,107,0,.1), rgba(255,166,35,.07));
+  border: 1px solid rgba(255,107,0,.35);
+  border-radius: var(--radius); padding: 20px; text-align: center; width: 100%;
+}
+.game-code {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem; font-weight: 900; color: var(--gold);
+  letter-spacing: 10px; line-height: 1;
+  text-shadow: 0 0 30px rgba(255,208,96,.4);
+}
+.code-hint { color: var(--muted); font-size: .78rem; margin-top: 8px; }
+
+/* ── Player list ── */
+.player-list { display: flex; flex-direction: column; gap: 9px; width: 100%; }
+.player-item {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border2);
+  border-radius: 13px; padding: 11px 16px;
+  transition: border-color .2s;
+}
+.player-item.you { border-color: rgba(255,107,0,.4); background: rgba(255,107,0,.07); }
+.player-item .emo { font-size: 1.25rem; }
+.player-item .pname { flex: 1; font-weight: 700; font-size: .95rem; }
+.chip {
+  font-size: .6rem; letter-spacing: 1.5px; text-transform: uppercase;
+  border-radius: 50px; padding: 3px 9px; border: 1px solid;
+}
+.chip-host { color: var(--saffron); border-color: rgba(255,107,0,.4); }
+.chip-you  { color: var(--mint);    border-color: rgba(0,212,160,.4); }
+
+/* ── Progress bar ── */
+.progress-track { width: 100%; height: 3px; background: rgba(255,255,255,.07); border-radius: 2px; overflow: hidden; }
+.progress-fill  { height: 100%; background: linear-gradient(90deg, var(--saffron), var(--gold)); border-radius: 2px; transition: width .5s ease; }
+
+/* ── Question header ── */
+.q-header { display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 8px; }
+.q-num { color: var(--saffron); font-size: .72rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+.turn-pill {
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(255,107,0,.1); border: 1px solid rgba(255,107,0,.28);
+  border-radius: 50px; padding: 6px 14px;
+  font-size: .82rem; font-weight: 700;
+  transition: background .2s, border-color .2s;
+}
+.turn-pill.myturn { background: rgba(255,107,0,.2); border-color: var(--saffron); }
+
+/* ── Category ── */
+.category { color: var(--pink); font-size: .68rem; letter-spacing: 2.5px; text-transform: uppercase; text-align: center; font-weight: 700; }
+
+/* ── Question text ── */
+.question-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
+  color: var(--cream); line-height: 1.55; text-align: center;
+  font-weight: 700;
+}
+
+/* ── Answer grid ── */
+.answer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+@media (max-width: 380px) { .answer-grid { grid-template-columns: 1fr; } }
+
+.answer-btn {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px; padding: 16px 14px;
+  color: var(--cream); font-family: 'DM Sans', sans-serif;
+  font-size: .88rem; font-weight: 600;
+  cursor: pointer; text-align: left; line-height: 1.4;
+  transition: background .15s, border-color .15s, transform .15s;
+  -webkit-appearance: none;
+  min-height: 64px;
+}
+.answer-btn:active:not(:disabled) { transform: scale(.97); }
+.answer-btn:hover:not(:disabled) { background: rgba(255,107,0,.12); border-color: var(--saffron); }
+.answer-btn.correct  { background: rgba(0,212,160,.18); border-color: var(--mint); color: var(--mint); }
+.answer-btn.wrong    { background: rgba(229,72,77,.18);  border-color: var(--red);  color: #ff8080; }
+.answer-btn.disabled-wait { opacity: .55; cursor: not-allowed; }
+
+/* ── Score pills ── */
+.score-row { display: flex; gap: 8px; flex-wrap: wrap; width: 100%; justify-content: center; }
+.score-pill {
+  flex: 1; min-width: 75px; max-width: 120px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border2);
+  border-radius: 14px; padding: 12px 8px; text-align: center;
+  transition: border-color .3s, background .3s;
+}
+.score-pill.active { border-color: var(--saffron); background: rgba(255,107,0,.09); }
+.score-pill .se { font-size: 1.15rem; }
+.score-pill .sn { font-size: .72rem; font-weight: 700; color: var(--cream); margin: 3px 0 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.score-pill .ss { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); font-weight: 700; }
+
+/* ── Feedback ── */
+.feedback-box {
+  background: rgba(255,255,255,.04);
+  border-radius: 14px; padding: 18px 16px;
+  text-align: center; display: flex; flex-direction: column; align-items: center; gap: 9px;
+  width: 100%;
+}
+.fb-icon { font-size: 2.6rem; }
+.fb-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; }
+.fb-title.ok  { color: var(--mint); }
+.fb-title.ko  { color: #ff8080; }
+.fb-expl { color: var(--muted); font-size: .86rem; line-height: 1.65; }
+.fb-pts { display: inline-block; background: rgba(255,208,96,.1); border: 1px solid rgba(255,208,96,.3); border-radius: 50px; padding: 4px 14px; color: var(--gold); font-size: .8rem; font-weight: 700; }
+
+/* ── Waiting ── */
+.waiting-msg { text-align: center; color: var(--muted); font-size: .9rem; line-height: 1.7; padding: 16px 0; }
+.waiting-msg strong { color: var(--cream); }
+.dot-blink { display: inline-block; width: 7px; height: 7px; background: var(--amber); border-radius: 50%; animation: blink 1.2s ease-in-out infinite; vertical-align: middle; margin-left: 4px; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
+
+/* ── Podium ── */
+.podium { display: flex; align-items: flex-end; justify-content: center; gap: 10px; width: 100%; }
+.podium-col { flex: 1; max-width: 130px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.podium-block { width: 100%; border-radius: 12px 12px 0 0; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; }
+.podium-block.g1 { height: 120px; background: rgba(255,208,96,.18);  border: 1px solid rgba(255,208,96,.4); }
+.podium-block.g2 { height:  88px; background: rgba(190,190,200,.12); border: 1px solid rgba(190,190,200,.3); }
+.podium-block.g3 { height:  66px; background: rgba(200,120,50,.13);  border: 1px solid rgba(200,120,50,.3); }
+.p-medal { font-size: 1.3rem; }
+.p-name  { color: var(--cream); font-size: .78rem; font-weight: 700; text-align: center; }
+.p-pts   { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.05rem; }
+
+/* ── Results list ── */
+.result-list { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.result-row {
+  display: flex; align-items: center; gap: 11px;
+  background: rgba(255,255,255,.04); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 12px 16px;
+}
+.r-rank { color: var(--muted); font-size: .78rem; width: 18px; flex-shrink: 0; }
+.r-emo  { font-size: 1.1rem; }
+.r-name { flex: 1; font-weight: 700; font-size: .9rem; }
+.r-score{ font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.1rem; }
+
+/* ── Error ── */
+.err-msg { color: #ff8080; font-size: .82rem; text-align: center; }
+
+/* ── Misc ── */
+.center { text-align: center; }
+.muted  { color: var(--muted); font-size: .82rem; }
+.gap-8  { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.gap-14 { display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.row-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.w100 { width: 100%; }
+</style>
+
+</head>
+
+<body>
+<div id="app">
+
+  <!-- ══ HOME ══ -->
+
+  <div id="s-home" class="screen on">
+    <div style="font-size:3rem;margin-top:20px">🌍</div>
+    <div class="logo">Clichés<br>World</div>
+    <p class="logo-sub">Le quiz des stéréotypes du monde</p>
+    <div class="card gap-14">
+      <label>Ton prénom</label>
+      <input id="inp-name" type="text" placeholder="Comment tu t'appelles ?" maxlength="14" autocomplete="off">
+      <div id="home-err" class="err-msg" style="display:none"></div>
+    </div>
+    <div class="row-btns">
+      <button class="btn btn-primary" onclick="goToCreate()">Créer une partie</button>
+      <button class="btn btn-ghost"   onclick="goToJoin()">Rejoindre</button>
+    </div>
+    <p class="muted center">20 questions · Stéréotypes du monde entier · Sans chrono</p>
+  </div>
+
+  <!-- ══ LOBBY HOST ══ -->
+
+  <div id="s-lobby" class="screen">
+    <div class="logo" style="font-size:1.9rem">Salle d'attente</div>
+    <div class="game-code-wrap">
+      <div class="muted" style="margin-bottom:6px;font-size:.75rem;letter-spacing:2px;text-transform:uppercase">Code de la partie</div>
+      <div class="game-code" id="display-code">—</div>
+      <div class="code-hint">Envoie ce code à tes amis · Ils ouvrent le même lien</div>
+      <button class="btn btn-ghost" style="margin-top:12px;font-size:.78rem;padding:8px 20px" onclick="copyCode()">
+        <span id="copy-label">📋 Copier le code</span>
+      </button>
+    </div>
+    <div class="card gap-14">
+      <label>Joueurs connectés (<span id="player-count">1</span>)</label>
+      <div class="player-list" id="player-list"></div>
+      <div id="lobby-err" class="err-msg" style="display:none"></div>
+    </div>
+    <button class="btn btn-primary" id="btn-start" onclick="hostStart()" disabled>
+      En attente d'un 2e joueur…
+    </button>
+    <p class="muted center">L'hôte lance quand tout le monde est prêt</p>
+  </div>
+
+  <!-- ══ JOIN ══ -->
+
+  <div id="s-join" class="screen">
+    <div class="logo" style="font-size:1.9rem">Rejoindre</div>
+    <div class="card gap-14">
+      <label>Ton prénom</label>
+      <input id="inp-join-name" type="text" placeholder="Prénom" maxlength="14" autocomplete="off">
+      <label style="margin-top:6px">Code de la partie</label>
+      <input id="inp-code" type="text" placeholder="Ex: AB3KZ" maxlength="5"
+        style="letter-spacing:7px;text-transform:uppercase;font-size:1.4rem;text-align:center">
+      <div id="join-err" class="err-msg" style="display:none"></div>
+    </div>
+    <button class="btn btn-primary" onclick="doJoin()">Rejoindre →</button>
+    <button class="btn btn-ghost"   onclick="show('s-home')">← Retour</button>
+  </div>
+
+  <!-- ══ WAITING (non-host after join) ══ -->
+
+  <div id="s-waiting" class="screen">
+    <div style="font-size:3rem">⏳</div>
+    <div class="logo" style="font-size:1.9rem">En attente…</div>
+    <div class="card gap-14">
+      <label>Joueurs dans la partie</label>
+      <div class="player-list" id="player-list-wait"></div>
+    </div>
+    <p class="waiting-msg">L'hôte va lancer la partie<span class="dot-blink"></span></p>
+  </div>
+
+  <!-- ══ QUESTION ══ -->
+
+  <div id="s-question" class="screen">
+    <div class="progress-track w100">
+      <div class="progress-fill" id="q-progress"></div>
+    </div>
+    <div class="q-header">
+      <div class="q-num" id="q-num">Q 1 / 20</div>
+      <div class="turn-pill" id="turn-pill">— tour</div>
+    </div>
+    <div class="score-row" id="score-row"></div>
+    <div class="card gap-14">
+      <div class="category" id="q-category">CATÉGORIE</div>
+      <div class="question-text" id="q-text">Question…</div>
+      <div class="divider"></div>
+      <div id="q-body">
+        <!-- answers or waiting msg injected here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RESULTS ══ -->
+
+  <div id="s-results" class="screen">
+    <div style="font-size:2.4rem">🏆</div>
+    <div class="logo" style="font-size:1.9rem">Résultats</div>
+    <div class="podium" id="podium"></div>
+    <div class="card">
+      <div class="result-list" id="result-list"></div>
+    </div>
+    <div class="row-btns" id="results-btns"></div>
+  </div>
+
+</div><!-- #app -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//   BASE DE QUESTIONS (60+)
+//   Format: { cat, q, a:[4 réponses], c: index correct, expl }
+// ═══════════════════════════════════════════════════════════════
+const ALL_Q = [
+
+// ──────────────── 🇮🇳 INDE ────────────────
+{cat:"🇮🇳 INDE",q:"Tous les Indiens sont végétariens. Vrai ou faux ?",
+ a:["VRAI — règle religieuse","FAUX — ~70% mangent de la viande","VRAI — 95% végétariens","FAUX — seulement à Mumbai"],
+ c:1,expl:"Seulement 20-30% sont végétariens. Le cliché vient des castes brahmanes très visibles."},
+
+{cat:"🇮🇳 INDE",q:"Les rues indiennes sont envahies d'éléphants en liberté. Cliché ou réalité ?",
+ a:["Réalité — partout en ville","Cliché — rarissime en ville","Réalité — dans 20 États","Cliché — il n'y a pas d'éléphants"],
+ c:1,expl:"Voir un éléphant en liberté en ville est rarissime. Ils vivent dans sanctuaires et forêts du Kerala."},
+
+{cat:"🇮🇳 INDE",q:"Bollywood produit plus de films par an que Hollywood.",
+ a:["Faux — Hollywood domine","Vrai — environ 2x plus","À égalité","Faux — Bollywood est petit"],
+ c:1,expl:"L'Inde produit ~1800 films/an contre ~600 pour Hollywood. Bollywood est la plus grande industrie cinématographique au monde !"},
+
+{cat:"🇮🇳 INDE",q:"L'Inde parle hindi — c'est la langue officielle de tous les États. Vrai ?",
+ a:["Vrai — l'hindi est universel","Faux — 22 langues officielles","Vrai — mais avec des dialectes","Faux — l'anglais domine"],
+ c:1,expl:"L'Inde reconnaît 22 langues officielles. Dans le sud, l'hindi est souvent refusé — le tamoul, le telugu ou le kannada y dominent."},
+
+{cat:"🇮🇳 INDE",q:"Le yoga a été inventé il y a environ… ?",
+ a:["500 ans","1 500 ans","4 700 ans","200 ans (époque coloniale)"],
+ c:2,expl:"Les premières représentations de postures de yoga datent de la civilisation de l'Indus (~2700 av. J.-C.) — soit ~4700 ans !"},
+
+{cat:"🇮🇳 INDE",q:"L'Inde est le pays qui consomme le plus d'or au monde.",
+ a:["Faux — c'est la Chine","Vrai — ~25% de la consommation mondiale","Faux — ce sont les États-Unis","Vrai — mais seulement les femmes"],
+ c:1,expl:"L'Inde absorbe environ 25% de l'or mondial, principalement pour la joaillerie et les cérémonies de mariage."},
+
+// ──────────────── 🇫🇷 FRANCE ────────────────
+{cat:"🇫🇷 FRANCE",q:"Les Français mangent de la baguette et du camembert tous les jours. Vrai ?",
+ a:["Oui, c'est culturel","Non — la baguette reste populaire mais pas quotidienne pour tous","Oui, c'est obligatoire","Non — ils préfèrent les croissants"],
+ c:1,expl:"La baguette reste très présente (~30 millions achetées/jour) mais l'alimentation française est bien plus variée que le cliché."},
+
+{cat:"🇫🇷 FRANCE",q:"La France est le pays le plus visité au monde. Vrai ou faux ?",
+ a:["Faux — c'est l'Espagne","Vrai — ~90 millions de touristes/an","Faux — c'est les États-Unis","Vrai — depuis 1990 seulement"],
+ c:1,expl:"La France est effectivement le pays le plus visité au monde avec environ 90 millions de touristes étrangers par an."},
+
+{cat:"🇫🇷 FRANCE",q:"Les Français sont les Européens qui travaillent le moins. Vrai ou faux ?",
+ a:["Vrai — 35h légales","Faux — ils travaillent dans la moyenne haute","Vrai — ils sont les moins productifs","Faux — ils travaillent plus que les Allemands"],
+ c:1,expl:"Malgré les 35h, les Français travaillent en moyenne ~1500h/an — similaire à l'Allemagne et plus que les Néerlandais."},
+
+{cat:"🇫🡷 FRANCE",q:"Le coq gaulois est l'animal officiel de la France. Vrai ou faux ?",
+ a:["Vrai — c'est constitutionnel","Faux — c'est un symbole officieux","Vrai — depuis 1789","Faux — c'est le lion"],
+ c:1,expl:"Le coq gaulois est un emblème traditionnel mais non officiel. L'emblème officiel de la République est la Marianne."},
+
+// ──────────────── 🇬🇧 ROYAUME-UNI ────────────────
+{cat:"🇬🇧 UK",q:"Les Britanniques boivent plus de thé que les Japonais.",
+ a:["Faux — le Japon domine","Vrai — 100 millions de tasses/jour en UK","Faux — c'est l'Irlande qui en consomme le plus","Vrai — mais seulement depuis la Reine Victoria"],
+ c:2,expl:"L'Irlande est #1 per capita pour la consommation de thé, devant le Royaume-Uni. Mais le Royaume-Uni en consomme tout de même ~100M de tasses par jour !"},
+
+{cat:"🇬🇧 UK",q:"Le Chicken Tikka Masala est considéré comme un plat national britannique. Vrai ?",
+ a:["Faux — c'est totalement indien","Vrai — inventé en Grande-Bretagne","Faux — c'est le fish & chips","Vrai — mais seulement en Écosse"],
+ c:1,expl:"Le Tikka Masala aurait été inventé à Glasgow ! Des immigrants indiens l'ont adapté aux goûts locaux. Il a failli être déclaré plat national."},
+
+{cat:"🇬🇧 UK",q:"Les Anglais s'excusent tout le temps même quand ce n'est pas leur faute.",
+ a:["Cliché pur — aucune étude ne le prouve","Réalité confirmée — ils s'excusent en moyenne 8x/jour","Cliché — c'est les Canadiens","Réalité mais seulement chez les aristocrates"],
+ c:1,expl:"Des études ont confirmé que les Britanniques s'excusent en moyenne 8 fois par jour, souvent de façon préventive ou par politesse."},
+
+// ──────────────── 🇩🇪 ALLEMAGNE ────────────────
+{cat:"🇩🇪 ALLEMAGNE",q:"Les Allemands ne font jamais d'humour. Vrai ou faux ?",
+ a:["Vrai — c'est culturellement prouvé","Faux — cliché, l'humour allemand existe mais diffère","Vrai — l'efficacité passe avant","Faux — ils sont les plus drôles d'Europe"],
+ c:1,expl:"L'humour allemand existe mais est souvent basé sur l'ironie et le Wortspiel (jeux de mots). Le cliché vient d'une incompréhension culturelle."},
+
+{cat:"🇩🇪 ALLEMAGNE",q:"L'Allemagne est le plus grand producteur de bière en Europe.",
+ a:["Vrai — c'est indiscutable","Faux — c'est la Pologne","Faux — c'est le Royaume-Uni","Vrai — mais la Chine produit plus mondialemen"],
+ c:3,expl:"L'Allemagne est le plus grand producteur de bière d'Europe ET la Chine est de loin le #1 mondial avec ~40% de la production mondiale."},
+
+{cat:"🇩🇪 ALLEMAGNE",q:"Le mot 'Schadenfreude' signifie en français ?",
+ a:["Peur de l'inconnu","Joie ressentie du malheur d'autrui","Nostalgie mélancolique","Sentiment d'appartenance"],
+ c:1,expl:"Schadenfreude (Schaden = dommage, Freude = joie) — ce mot n'existe pas en français. Les langues révèlent les stéréotypes culturels !"},
+
+// ──────────────── 🇯🇵 JAPON ────────────────
+{cat:"🇯🇵 JAPON",q:"Les Japonais travaillent plus que tous les autres pays du monde.",
+ a:["Vrai — ils sont #1 mondial","Faux — les Mexicains travaillent bien plus d'heures","Vrai — depuis les années 80","Faux — c'est les Américains"],
+ c:1,expl:"Le Mexique est #1 des heures travaillées (OCDE) avec ~2200h/an. Le Japon (~1600h) est dans la moyenne. Mais la culture du présentéisme japonais reste réelle."},
+
+{cat:"🇯🇵 JAPON",q:"Le Japon est le pays qui consomme le plus de sushis per capita.",
+ a:["Vrai — évidemment","Faux — c'est la Corée du Sud","Faux — c'est les États-Unis","Vrai mais pas de loin"],
+ c:0,expl:"Le Japon consomme environ 80% de son thon en sushis. La culture du sushi est profondément ancrée — environ 45 000 restaurants de sushis au Japon."},
+
+{cat:"🇯🇵 JAPON",q:"Les Japonais s'inclinent pour se saluer parce qu'ils n'aiment pas le contact physique.",
+ a:["Vrai — c'est culturellement documenté","Faux — c'est une marque de respect, pas une phobie","Vrai — issu du shintoïsme","Faux — ils se font la bise entre amis"],
+ c:1,expl:"L'inclination (お辞儀, ojigi) exprime le respect et le rang social. Ce n'est pas une phobie du contact — entre amis proches, les Japonais peuvent aussi se serrer la main."},
+
+{cat:"🇯🇵 JAPON",q:"Les mangas sont perçus comme enfantins au Japon comme en Occident. Vrai ?",
+ a:["Vrai — c'est pour les enfants partout","Faux — au Japon, les mangas touchent tous les âges","Vrai en Occident, faux au Japon","Faux partout — le regard a changé"],
+ c:1,expl:"Au Japon, les mangas sont lus par toute la société : enfants, adultes, retraités. Il existe des manga pour hommes d'affaires, des seinen pour adultes, etc."},
+
+// ──────────────── 🇺🇸 ÉTATS-UNIS ────────────────
+{cat:"🇺🇸 USA",q:"Les Américains sont les plus gros consommateurs de fast-food au monde.",
+ a:["Vrai — sans contestation","Faux — le Royaume-Uni les devance","Faux — c'est le Canada","Vrai mais pas de loin devant"],
+ c:0,expl:"Les USA sont effectivement #1 : ~50 000 fast-foods McDonald's, Burger King, etc. Environ 50 millions d'Américains mangent du fast-food chaque jour."},
+
+{cat:"🇺🇸 USA",q:"Les Américains ont un rapport différent à l'espace personnel — ils parlent trop fort. Cliché ou réalité ?",
+ a:["Cliché pur","Réalité culturelle documentée — la proxémie varie","Cliché seulement pour les New-Yorkais","Réalité liée au puritanisme"],
+ c:1,expl:"La proxémie (distance personnelle) varie culturellement. Les Américains ont une 'bulle personnelle' plus grande mais parlent effectivement plus fort que les Européens du Nord."},
+
+{cat:"🇺🇸 USA",q:"Les États-Unis sont le seul pays développé sans système de santé universel.",
+ a:["Faux — la Suisse non plus","Vrai parmi les pays de l'OCDE","Faux — c'est aussi le cas en Australie","Vrai depuis toujours"],
+ c:1,expl:"Parmi les pays de l'OCDE, les États-Unis sont effectivement le seul sans couverture maladie universelle. L'Affordable Care Act a étendu l'accès mais sans couverture totale."},
+
+// ──────────────── 🇧🇷 BRÉSIL ────────────────
+{cat:"🇧🇷 BRÉSIL",q:"La langue officielle du Brésil est l'espagnol.",
+ a:["Vrai — comme le reste de l'Amérique latine","Faux — c'est le portugais","Vrai mais avec de l'espagnol aussi","Faux — c'est le créole"],
+ c:1,expl:"Le Brésil est l'unique grande nation d'Amérique latine dont la langue officielle est le portugais, héritage de la colonisation par le Portugal."},
+
+{cat:"🇧🇷 BRÉSIL",q:"Le Brésil a remporté le plus de Coupes du Monde de foot.",
+ a:["Faux — c'est l'Allemagne","Vrai — 5 titres","Faux — c'est l'Italie","Vrai — 6 titres"],
+ c:1,expl:"Le Brésil détient le record avec 5 Coupes du Monde (1958, 1962, 1970, 1994, 2002). Seul pays à avoir participé à toutes les éditions."},
+
+{cat:"🇧🇷 BRÉSIL",q:"Le carnaval de Rio a lieu en décembre (été brésilien).",
+ a:["Vrai — été = décembre au Brésil","Faux — il a lieu en février/mars","Vrai mais certaines années","Faux — c'est en novembre"],
+ c:1,expl:"Le carnaval de Rio a lieu en février ou mars (avant le Carême catholique). C'est l'été de l'hémisphère sud, mais pas en décembre."},
+
+// ──────────────── 🇨🇳 CHINE ────────────────
+{cat:"🇨🇳 CHINE",q:"Tous les Chinois mangent avec des baguettes à chaque repas.",
+ a:["Vrai — c'est la tradition","Faux — fourchettes et cuillères courantes aussi","Vrai sauf à Pékin","Faux — seulement en Chine du Sud"],
+ c:1,expl:"Si les baguettes sont très courantes, les cuillères (pour les soupes) et fourchettes sont aussi largement utilisées selon les plats et régions."},
+
+{cat:"🇨🇳 CHINE",q:"La Grande Muraille de Chine est visible depuis l'espace à l'œil nu.",
+ a:["Vrai — c'est confirmé depuis Apollo","Faux — trop étroite (≈5m), impossible à voir","Vrai avec de bonnes conditions météo","Faux mais visible depuis l'ISS avec télescope"],
+ c:1,expl:"C'est l'un des mythes les plus répandus ! La Grande Muraille fait ~5m de large — invisible depuis l'espace. Même les astronautes chinois l'ont démenti."},
+
+{cat:"🇨🇳 CHINE",q:"La Chine a la plus grande population du monde en 2024.",
+ a:["Vrai — 1,4 milliard","Faux — l'Inde a dépassé la Chine en 2023","Vrai mais plus pour longtemps","Faux — c'est encore flou"],
+ c:1,expl:"En 2023, l'Inde a officiellement dépassé la Chine avec ~1,43 milliard d'habitants. La Chine connaît une démographie en déclin."},
+
+// ──────────────── 🇷🇺 RUSSIE ────────────────
+{cat:"🇷🇺 RUSSIE",q:"Les Russes boivent de la vodka quotidiennement.",
+ a:["Vrai — la consommation est la plus haute du monde","Faux — cliché, la consommation a fortement baissé","Vrai surtout en hiver","Faux — ils préfèrent la bière"],
+ c:1,expl:"La consommation d'alcool en Russie a chuté de ~40% entre 2003 et 2016 grâce aux politiques anti-alcool. La bière a dépassé la vodka en popularité."},
+
+{cat:"🇷🇺 RUSSIE",q:"La Russie est le plus grand pays du monde en superficie.",
+ a:["Faux — c'est le Canada","Vrai — 17 millions de km²","Faux — à égalité avec le Canada","Vrai mais seulement depuis 1991"],
+ c:1,expl:"La Russie couvre 17,1 millions de km² — plus grand que toute la surface de la Lune. Elle représente 11% des terres émergées mondiales."},
+
+// ──────────────── 🌍 AFRIQUE ────────────────
+{cat:"🌍 AFRIQUE",q:"L'Afrique est un pays.",
+ a:["Vrai — c'est un État fédéral","Faux — c'est un continent de 54 pays","Vrai pour l'Union Africaine","Faux — c'est 3 pays distincts"],
+ c:1,expl:"L'Afrique est un continent de 54 pays reconnus, des milliers d'ethnies, des milliers de langues. Ce cliché révèle une méconnaissance profonde."},
+
+{cat:"🌍 AFRIQUE",q:"Le Nigeria est la plus grande économie d'Afrique.",
+ a:["Non — c'est l'Afrique du Sud","Oui — PIB le plus élevé du continent","Non — c'est l'Éthiopie","Oui mais seulement depuis 2020"],
+ c:1,expl:"Le Nigeria est effectivement la plus grande économie d'Afrique (PIB ~500 Mds$), suivi de l'Afrique du Sud et de l'Égypte."},
+
+{cat:"🌍 AFRIQUE",q:"L'Égypte est géographiquement en Afrique.",
+ a:["Faux — elle est en Asie","Vrai — mais culturellement au Moyen-Orient","Vrai — et aussi partiellement en Asie (Sinaï)","Faux — elle est en Méditerranée"],
+ c:2,expl:"L'Égypte est principalement en Afrique du Nord-Est. Seule la péninsule du Sinaï est en Asie. Culturellement, elle appartient au monde arabe et méditerranéen."},
+
+// ──────────────── 🇲🇽 MEXIQUE ────────────────
+{cat:"🇲🇽 MEXIQUE",q:"Le tequila est la boisson nationale mexicaine la plus consommée au Mexique.",
+ a:["Vrai — tous les Mexicains boivent de la tequila","Faux — la bière (Corona, Modelo) domine","Vrai surtout dans l'État de Jalisco","Faux — c'est le mezcal"],
+ c:1,expl:"La bière est de loin la boisson alcoolisée la plus consommée au Mexique. La tequila est #1 à l'export mais pas en consommation locale."},
+
+{cat:"🇲🇽 MEXIQUE",q:"Le Mexique est le pays d'origine du chocolat.",
+ a:["Faux — c'est la Suisse","Vrai — les Mayas et Aztèques cultivaient le cacao","Faux — c'est le Guatemala","Vrai mais seulement le cacao amer"],
+ c:1,expl:"Les Mayas et Aztèques consommaient le cacao depuis ~1900 av. J.-C. Le mot 'chocolat' vient du nahuatl (aztèque) : 'xocolatl'."},
+
+// ──────────────── 🌐 GENRE & SOCIÉTÉ ────────────────
+{cat:"🌐 GENRE",q:"Les femmes parlent plus que les hommes. C'est scientifiquement prouvé ?",
+ a:["Oui — études universelles le confirment","Non — les études montrent une égalité voire l'inverse","Oui — 20 000 mots/jour vs 7 000","Non — ça dépend du contexte social"],
+ c:3,expl:"Plusieurs méta-analyses montrent qu'il n'y a pas de différence significative. Dans les réunions professionnelles, ce sont souvent les hommes qui parlent plus."},
+
+{cat:"🌐 GENRE",q:"Le rose est une couleur de fille depuis toujours.",
+ a:["Vrai — tradition universelle","Faux — au début du XXe siècle, le rose était pour les garçons","Vrai dans toutes les cultures","Faux — c'est une invention publicitaire des années 80"],
+ c:1,expl:"Au début du XXe siècle, le rose était considéré comme une couleur 'forte' pour les garçons, et le bleu comme 'doux' pour les filles. L'inversion s'est faite progressivement."},
+
+{cat:"🌐 GENRE",q:"Les femmes sont naturellement moins douées en mathématiques.",
+ a:["Vrai — différences biologiques prouvées","Faux — les écarts sont liés aux stéréotypes culturels","Vrai dans les études asiatiques","Faux mais les femmes réussissent moins"],
+ c:1,expl:"Dans les pays où l'égalité de genre est forte (Islande, Finlande), les femmes égalent ou dépassent les hommes en maths. Les écarts sont culturels, non biologiques."},
+
+// ──────────────── 🌐 RELIGION ────────────────
+{cat:"🌐 RELIGION",q:"L'islam est la religion qui croît le plus vite dans le monde.",
+ a:["Faux — c'est le christianisme évangélique","Vrai — projections UNESCO","Faux — c'est l'athéisme","Vrai selon Pew Research"],
+ c:3,expl:"Selon le Pew Research Center, l'islam est la religion dont la croissance est la plus rapide — projeté pour dépasser le christianisme en nombre d'adeptes vers 2070."},
+
+{cat:"🌐 RELIGION",q:"La majorité des musulmans du monde sont arabes.",
+ a:["Vrai — l'islam est une religion arabe","Faux — ~80% des musulmans sont non arabes","Vrai au Moyen-Orient uniquement","Faux — la majorité est indonésienne"],
+ c:1,expl:"Environ 80% des musulmans dans le monde ne sont pas arabes. L'Indonésie est le pays avec la plus grande population musulmane (~230M), suivie du Pakistan et de l'Inde."},
+
+// ──────────────── 🌐 TECH & MODERNITÉ ────────────────
+{cat:"💻 TECH",q:"La Silicon Valley est dans la ville de San Francisco.",
+ a:["Vrai — c'est SF","Faux — elle est dans la banlieue sud de SF (San Jose, Palo Alto…)","Vrai — avec quelques annexes","Faux — c'est à Los Angeles"],
+ c:1,expl:"La Silicon Valley désigne la région de Santa Clara County au sud de San Francisco — Palo Alto, Mountain View, Sunnyvale, San Jose. Pas la ville de SF elle-même."},
+
+{cat:"💻 TECH",q:"La Chine interdit complètement Internet à ses citoyens.",
+ a:["Vrai — total blackout","Faux — internet existe mais censuré (Grand Firewall)","Vrai depuis 2020","Faux — seuls Google et YouTube sont bloqués"],
+ c:1,expl:"La Chine a un internet massif (~1 milliard d'utilisateurs) mais censuré via le 'Grand Firewall'. Google, Facebook, YouTube sont bloqués mais des alternatives chinoises existent (Baidu, WeChat)."},
+
+// ──────────────── 🌐 GÉOGRAPHIE & CLIMAT ────────────────
+{cat:"🌍 GÉO",q:"L'Australie est un pays et un continent à la fois.",
+ a:["Faux — c'est juste un pays","Vrai — seul État à occuper tout un continent","Faux — la Nouvelle-Zélande en fait partie","Vrai mais Tasmanie exclue"],
+ c:1,expl:"L'Australie est le seul pays au monde qui occupe à lui seul un continent entier (Océanie continentale). C'est aussi le 6e plus grand pays du monde."},
+
+{cat:"🌍 GÉO",q:"Le Sahara est le plus grand désert du monde.",
+ a:["Vrai — c'est indiscutable","Faux — l'Antarctique est le plus grand désert","Vrai en superficie de sable","Faux — c'est le désert de Gobi"],
+ c:1,expl:"L'Antarctique est techniquement le plus grand désert (~14M km²) car un désert = zone aride. Le Sahara (~9M km²) est le plus grand désert CHAUD."},
+
+{cat:"🌍 GÉO",q:"New York est la capitale des États-Unis.",
+ a:["Vrai — la plus grande ville = capitale","Faux — c'est Washington D.C.","Vrai jusqu'en 1800","Faux — c'est Los Angeles"],
+ c:1,expl:"Washington D.C. est la capitale fédérale depuis 1800. New York a brièvement été capitale (1785-1790) mais n'est 'que' la plus grande ville du pays."},
+
+// ──────────────── 🇰🇷 CORÉE ────────────────
+{cat:"🇰🇷 CORÉE",q:"La Corée du Sud est devenue un géant technologique en combien de temps ?",
+ a:["200 ans de développement progressif","~50 ans — depuis les années 70","~100 ans — depuis l'ère coloniale japonaise","~20 ans — seulement depuis internet"],
+ c:1,expl:"La Corée du Sud est passée en ~50 ans d'un des pays les plus pauvres du monde (après guerre 1953) à la 12e économie mondiale. C'est le 'Miracle sur la rivière Han'."},
+
+{cat:"🇰🇷 CORÉE",q:"La K-pop est un phénomène récent né dans les années 2000.",
+ a:["Vrai — BTS l'a créé","Faux — elle remonte aux années 90 avec Seo Taiji","Vrai — né avec YouTube","Faux — elle existe depuis les années 60"],
+ c:1,expl:"La K-pop moderne est née en 1992 avec Seo Taiji and Boys qui a fusionné hip-hop américain et musique coréenne. Les années 2000 ont marqué la mondialisation du genre."},
+
+// ──────────────── 🌐 ALIMENTATION ────────────────
+{cat:"🍽️ FOOD",q:"Les spaghetti bolognaise sont un plat traditionnel de Bologne.",
+ a:["Vrai — inventé à Bologne","Faux — Bologne a un ragù mais pas comme la version mondiale","Vrai depuis le XIVe siècle","Faux — c'est un plat américain"],
+ c:1,expl:"Le vrai 'ragù alla bolognese' est une sauce à la viande épaisse, servie avec des tagliatelles — PAS des spaghetti. Les spaghetti bolognaise sont une invention italo-américaine."},
+
+{cat:"🍽️ FOOD",q:"Les Chinois ne mangent pas de pain.",
+ a:["Vrai — le riz remplace tout","Faux — la Chine du Nord consomme beaucoup de pain et nouilles","Vrai sauf à Shanghai","Faux — le baozi est une sorte de pain"],
+ c:1,expl:"La Chine du Nord (Pékin, Xi'an) est basée sur le blé : mantous (pains cuits à la vapeur), baozi, nouilles. Le riz domine surtout au sud."},
+
+{cat:"🍽️ FOOD",q:"Le café espresso a été inventé en Espagne.",
+ a:["Vrai — 'espresso' = mot espagnol","Faux — il a été inventé en Italie","Vrai mais popularisé en Italie","Faux — c'est un mot anglais"],
+ c:1,expl:"'Espresso' vient de l'italien 'esprimere' (exprimer/extraire). La machine à espresso a été brevetée par Angelo Moriondo à Turin en 1884."},
+
+// ──────────────── 🌐 ÉCONOMIE ────────────────
+{cat:"💰 ÉCON.",q:"Le Bitcoin a été créé par un Japonais nommé Satoshi Nakamoto.",
+ a:["Vrai — identité prouvée","Vrai mais 'Satoshi Nakamoto' est probablement un pseudonyme","Faux — c'est américain","Faux — c'est une création collective anonyme"],
+ c:1,expl:"'Satoshi Nakamoto' publia le whitepaper Bitcoin en 2008 mais son identité réelle n'a jamais été prouvée. Il pourrait s'agir d'une personne ou d'un groupe."},
+
+{cat:"💰 ÉCON.",q:"La Suisse est le pays le plus riche d'Europe.",
+ a:["Vrai — PIB/habitant le plus élevé","Faux — c'est le Luxembourg","Faux — c'est Monaco","Vrai depuis la Seconde Guerre mondiale"],
+ c:1,expl:"Le Luxembourg a le PIB par habitant le plus élevé d'Europe (~$140 000/an). La Suisse est #2. Monaco est une principauté indépendante avec un PIB encore plus élevé mais population mini."},
+
+// ──────────────── 🇸🇰 SCANDINAVIE ────────────────
+{cat:"🌍 SCAND.",q:"Les pays nordiques sont les pays les plus heureux du monde.",
+ a:["Faux — c'est la Suisse","Vrai — ils dominent le World Happiness Report","Faux — c'est l'Australie","Vrai mais seulement depuis 2010"],
+ c:1,expl:"La Finlande est #1 du World Happiness Report depuis 7 ans. Les pays nordiques (Danemark, Suède, Norvège, Islande) occupent constamment le top 10."},
+
+{cat:"🌍 SCAND.",q:"Le IKEA a été fondé par un Suédois de 17 ans.",
+ a:["Faux — c'était un adulte","Vrai — Ingvar Kamprad a fondé IKEA à 17 ans en 1943","Vrai mais à 25 ans","Faux — IKEA est danois"],
+ c:1,expl:"Ingvar Kamprad a fondé IKEA en 1943 à l'âge de 17 ans en Suède. IKEA est un acronyme : Ingvar Kamprad Elmtaryd Agunnaryd (sa ferme et son village natal)."},
+
+// ──────────────── 🌐 SCIENCE & MYTHES ────────────────
+{cat:"🔬 SCIENCE",q:"On utilise seulement 10% de notre cerveau.",
+ a:["Vrai — prouvé par IRM","Faux — mythe complet, on utilise tout notre cerveau","Vrai mais en même temps","Faux — on en utilise 30% en moyenne"],
+ c:1,expl:"Ce mythe est complètement faux. L'IRM fonctionnelle montre que presque toutes les zones du cerveau sont actives. Même pendant le sommeil, le cerveau travaille."},
+
+{cat:"🔬 SCIENCE",q:"Les humains sont les seuls animaux à utiliser des outils.",
+ a:["Vrai — c'est la définition de l'intelligence","Faux — chimpanzés, corbeaux, loutres utilisent des outils","Vrai mais de façon rudimentaire","Faux — seulement les primates"],
+ c:1,expl:"Les chimpanzés utilisent des brindilles pour attraper des termites, les corneilles fabriquent des crochets, les loutres utilisent des pierres pour casser des coquillages."},
+
+{cat:"🔬 SCIENCE",q:"La langue humaine a 4 zones pour goûter sucré, salé, acide, amer.",
+ a:["Vrai — carte de la langue prouvée","Faux — mythe scolaire, tous les goûts sont partout + umami","Vrai mais avec un 5e (épicé)","Faux — il n'y a que 2 zones"],
+ c:1,expl:"La 'carte de la langue' est un mythe du XIXe siècle. Les papilles gustatives sont réparties sur toute la langue. Il existe aussi un 5e goût : l'umami (goût savoureux)."},
+
+// ──────────────── 🌐 LANGUES ────────────────
+{cat:"🗣️ LANGUES",q:"Le mandarin est la langue la plus parlée au monde.",
+ a:["Vrai — 1,1 milliard de locuteurs natifs","Faux — c'est l'anglais en total","Vrai en locuteurs natifs uniquement","Faux — c'est l'espagnol"],
+ c:2,expl:"Le mandarin a le plus de locuteurs NATIFS (~920M). Mais l'anglais est #1 en nombre TOTAL de locuteurs (natifs + appris), suivi du mandarin et de l'hindi."},
+
+{cat:"🗣️ LANGUES",q:"L'esperanto est parlé par des millions de personnes.",
+ a:["Faux — quelques milliers seulement","Vrai — estimé entre 1 et 2 millions","Faux — langue morte","Vrai — c'est la 2e langue de l'UE"],
+ c:1,expl:"L'espéranto compte entre 1 et 2 millions de locuteurs actifs dans le monde, avec environ 1000 familles qui l'utilisent comme langue maternelle."},
+
+// ──────────────── 🌐 SPORT ────────────────
+{cat:"⚽ SPORT",q:"Le cricket est le sport le plus populaire dans le monde.",
+ a:["Vrai — plus que le foot","Faux — le football (soccer) est #1 mondial","Vrai en nombre de fans (Inde)","Faux — c'est le basketball"],
+ c:1,expl:"Le football (soccer) est #1 avec ~4 milliards de fans. Le cricket est #2 avec ~2,5 milliards de fans, principalement grâce à l'Inde, le Pakistan et le Bangladesh."},
+
+{cat:"⚽ SPORT",q:"Les Américains appellent 'football' un sport qui ne se joue presque pas avec le pied.",
+ a:["Faux — le football américain utilise beaucoup les pieds","Vrai — le kicker (botteur) est souvent minoritaire","Vrai mais c'est lié à l'histoire","Faux — les origines du mot viennent du terrain, pas du pied"],
+ c:3,expl:"Le 'football' vient du fait que le jeu se pratique sur pied (au sol) par opposition à la cavalerie. Le terme existait avant la spécialisation du botteur."},
+
+// ──────────────── 🇦🇺 AUSTRALIE ────────────────
+{cat:"🇦🇺 AUSTRALIE",q:"L'Australie a les animaux les plus dangereux au monde.",
+ a:["Vrai — top 10 des espèces mortelles","Partiellement vrai — mais peu de morts réelles/an","Vrai — plus de 20 morts/an","Faux — c'est le Brésil"],
+ c:1,expl:"L'Australie abrite effectivement araignées, serpents et crocodiles mortels — mais les morts réelles sont très rares (<5/an). Ironiquement, les chevaux et vaches tuent plus."},
+
+{cat:"🇦🇺 AUSTRALIE",q:"Les kangourous sont plus nombreux que les humains en Australie.",
+ a:["Faux — humains plus nombreux","Vrai — environ 50M kangourous vs 26M humains","Vrai — ratio 3:1","Faux — ils sont protégés car rares"],
+ c:1,expl:"Il y a environ 50 millions de kangourous pour 26 millions d'humains en Australie — soit presque 2 kangourous par personne ! Ce n'est PAS un cliché, c'est réel."},
+
+// ──────────────── 🌐 STÉRÉOTYPES META ────────────────
+{cat:"🧠 STÉRÉOTYPES",q:"Les stéréotypes sont toujours totalement faux.",
+ a:["Vrai — toujours une caricature","Faux — ils contiennent parfois un fond de vérité statistique","Vrai — ils sont construits de toutes pièces","Faux — ils sont toujours vrais"],
+ c:1,expl:"Les stéréotypes sont des généralisations abusives mais s'appuient parfois sur des données statistiques réelles. Le problème est de les appliquer à des individus."},
+
+{cat:"🧠 STÉRÉOTYPES",q:"Le terme 'cliché' vient de l'imprimerie.",
+ a:["Faux — vient du latin","Vrai — c'était une plaque d'impression réutilisable","Vrai — invention de Gutenberg","Faux — vient du français 'cliquer'"],
+ c:1,expl:"Le 'cliché' est une plaque stéréotypée (!) d'imprimerie qui permettait de reproduire à l'identique la même image. D'où le sens figuré : image toujours reproduite."},
+
+{cat:"🧠 STÉRÉOTYPES",q:"Les biais cognitifs comme les stéréotypes sont l'apanage des personnes peu éduquées.",
+ a:["Vrai — l'éducation les réduit","Faux — tout le monde a des biais, quelle que soit l'éducation","Vrai — études de Harvard le prouvent","Faux — les femmes en ont moins"],
+ c:1,expl:"Les biais cognitifs (confirmation, ancrage, stéréotypes…) sont universels et indépendants du niveau d'éducation. Même les chercheurs en neurosciences ont des biais !"},
+
+];
+
+const EMOJIS = ["🟠","🔵","🟢","🟣","🔴","🟡","⚪","🟤"];
+const TOTAL_Q = 20;
+
+// ═══════════════════════════════════════════════════════
+//   FIREBASE SETUP
+// ═══════════════════════════════════════════════════════
+let db, fbRef, fbSet, fbGet, fbUpdate, fbOnValue, fbOff;
+let firebaseReady = false;
+
+async function initFirebase() {
+  // Attend que le module soit chargé
+  let tries = 0;
+  while (!window.__FB_INIT__ && tries < 20) {
+    await new Promise(r => setTimeout(r, 200));
+    tries++;
+  }
+  if (!window.__FB_INIT__) { console.error("Firebase non chargé"); return false; }
+  const { initializeApp, getDatabase, ref, set, get, update, onValue, off, firebaseConfig } = window.__FB_INIT__;
+  const app = initializeApp(firebaseConfig);
+  db = getDatabase(app);
+  fbRef = ref; fbSet = set; fbGet = get; fbUpdate = update; fbOnValue = onValue; fbOff = off;
+  firebaseReady = true;
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════
+//   STATE
+// ═══════════════════════════════════════════════════════
+let myId = null;
+let myCode = null;
+let gameRef = null;
+let unsubscribe = null;
+let isHost = false;
+let gs = null; // game state from Firebase
+
+function genCode() {
+  const c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  return Array.from({length:5}, ()=>c[Math.floor(Math.random()*c.length)]).join("");
+}
+function shuffle(a) {
+  const b=[...a];
+  for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}
+  return b;
+}
+function uid() { return 'p_'+Date.now()+'_'+Math.random().toString(36).slice(2,7); }
+
+// ═══════════════════════════════════════════════════════
+//   UI HELPERS
+// ═══════════════════════════════════════════════════════
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+function err(id, msg) {
+  const el=document.getElementById(id);
+  el.textContent=msg; el.style.display=msg?'block':'none';
+}
+
+// ═══════════════════════════════════════════════════════
+//   HOME → CREATE
+// ═══════════════════════════════════════════════════════
+async function goToCreate() {
+  const name = document.getElementById('inp-name').value.trim();
+  if(!name){err('home-err','Entre ton prénom !');return;}
+  err('home-err','');
+
+  if(!firebaseReady) {
+    const ok = await initFirebase();
+    if(!ok){err('home-err','Connexion Firebase impossible. Vérifie ta config.');return;}
+  }
+
+  myId = uid();
+  isHost = true;
+  myCode = genCode();
+  const qOrder = shuffle([...Array(ALL_Q.length).keys()]).slice(0,TOTAL_Q);
+
+  const state = {
+    phase: 'lobby',
+    host: myId,
+    players: [{id:myId, name, emoji:EMOJIS[0], score:0}],
+    qOrder, currentQ:0, currentPlayerIdx:0,
+    showFeedback:false, feedbackCorrect:false,
+    feedbackWho:null, feedbackPts:0, lastAnswer:null
+  };
+
+  gameRef = fbRef(db, 'games/'+myCode);
+  await fbSet(gameRef, state);
+  gs = state;
+
+  document.getElementById('display-code').textContent = myCode;
+  renderLobby();
+  show('s-lobby');
+  subscribeGame();
+}
+
+// ═══════════════════════════════════════════════════════
+//   HOME → JOIN
+// ═══════════════════════════════════════════════════════
+function goToJoin() {
+  const name = document.getElementById('inp-name').value.trim();
+  if(name) document.getElementById('inp-join-name').value = name;
+  show('s-join');
+}
+
+async function doJoin() {
+  const name = document.getElementById('inp-join-name').value.trim();
+  const code = document.getElementById('inp-code').value.trim().toUpperCase();
+  if(!name){err('join-err','Entre ton prénom !');return;}
+  if(code.length!==5){err('join-err','Le code fait 5 caractères.');return;}
+  err('join-err','');
+
+  if(!firebaseReady) {
+    const ok = await initFirebase();
+    if(!ok){err('join-err','Connexion impossible. Vérifie ta config Firebase.');return;}
+  }
+
+  const r = fbRef(db,'games/'+code);
+  const snap = await fbGet(r);
+  if(!snap.exists()){err('join-err','Partie introuvable. Vérifie le code.');return;}
+  const s = snap.val();
+  if(s.phase!=='lobby'){err('join-err','La partie a déjà commencé.');return;}
+  if(s.players.length>=6){err('join-err','Partie pleine (6 joueurs max).');return;}
+
+  myId = uid();
+  myCode = code;
+  isHost = false;
+  const emoji = EMOJIS[s.players.length % EMOJIS.length];
+  const newPlayer = {id:myId, name, emoji, score:0};
+
+  gameRef = r;
+  await fbUpdate(fbRef(db,'games/'+code+'/players'), {[s.players.length]: newPlayer});
+
+  gs = snap.val();
+  renderWaiting();
+  show('s-waiting');
+  subscribeGame();
+}
+
+// ═══════════════════════════════════════════════════════
+//   SUBSCRIBE (realtime listener)
+// ═══════════════════════════════════════════════════════
+function subscribeGame() {
+  if(unsubscribe){fbOff(gameRef,unsubscribe);unsubscribe=null;}
+  unsubscribe = fbOnValue(gameRef, snap => {
+    if(!snap.exists()) return;
+    gs = snap.val();
+    syncUI();
+  });
+}
+
+function syncUI() {
+  if(!gs) return;
+  if(gs.phase==='lobby'){
+    if(isHost) renderLobby();
+    else renderWaiting();
+  } else if(gs.phase==='game'){
+    renderQuestion();
+  } else if(gs.phase==='results'){
+    renderResults();
+    show('s-results');
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//   LOBBY
+// ═══════════════════════════════════════════════════════
+function renderLobby() {
+  if(!gs) return;
+  document.getElementById('player-count').textContent = gs.players.length;
+  const list = document.getElementById('player-list');
+  list.innerHTML = gs.players.map(p=>`
+    <div class="player-item ${p.id===myId?'you':''}">
+      <span class="emo">${p.emoji}</span>
+      <span class="pname">${p.name}</span>
+      ${p.id===gs.host?'<span class="chip chip-host">Hôte</span>':''}
+      ${p.id===myId&&p.id!==gs.host?'<span class="chip chip-you">Toi</span>':''}
+    </div>`).join('');
+  const btn = document.getElementById('btn-start');
+  if(gs.players.length>=2){
+    btn.disabled=false;
+    btn.textContent=`Lancer avec ${gs.players.length} joueur${gs.players.length>1?'s':''} 🌶️`;
+  } else {
+    btn.disabled=true;
+    btn.textContent='En attente d\'un 2e joueur…';
+  }
+}
+
+function renderWaiting() {
+  if(!gs) return;
+  const list = document.getElementById('player-list-wait');
+  if(list) list.innerHTML = gs.players.map(p=>`
+    <div class="player-item ${p.id===myId?'you':''}">
+      <span class="emo">${p.emoji}</span>
+      <span class="pname">${p.name}</span>
+      ${p.id===gs.host?'<span class="chip chip-host">Hôte</span>':''}
+      ${p.id===myId?'<span class="chip chip-you">Toi</span>':''}
+    </div>`).join('');
+}
+
+async function hostStart() {
+  if(!isHost||!gameRef) return;
+  await fbUpdate(gameRef, {phase:'game'});
+}
+
+function copyCode() {
+  navigator.clipboard.writeText(myCode).then(()=>{
+    document.getElementById('copy-label').textContent='✅ Copié !';
+    setTimeout(()=>document.getElementById('copy-label').textContent='📋 Copier le code',2000);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//   QUESTION RENDER
+// ═══════════════════════════════════════════════════════
+let localAnswer = null;
+
+function renderQuestion() {
+  show('s-question');
+  if(!gs||!gs.qOrder) return;
+
+  const q = ALL_Q[gs.qOrder[gs.currentQ]];
+  const totalQ = Math.min(TOTAL_Q, gs.qOrder.length);
+  const curPlayer = gs.players[gs.currentPlayerIdx];
+  const isMine = curPlayer && curPlayer.id === myId;
+
+  // Progress
+  document.getElementById('q-progress').style.width = (gs.currentQ/totalQ*100)+'%';
+  document.getElementById('q-num').textContent = `Q ${gs.currentQ+1} / ${totalQ}`;
+
+  // Turn pill
+  const pill = document.getElementById('turn-pill');
+  pill.textContent = isMine ? '⭐ Ton tour !' : `${curPlayer.emoji} ${curPlayer.name}`;
+  pill.className = 'turn-pill'+(isMine?' myturn':'');
+
+  // Category & question
+  document.getElementById('q-category').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.q;
+
+  // Scores
+  const sr = document.getElementById('score-row');
+  sr.innerHTML = gs.players.map((p,i)=>`
+    <div class="score-pill ${i===gs.currentPlayerIdx?'active':''}">
+      <div class="se">${p.emoji}</div>
+      <div class="sn">${p.name}${p.id===myId?' ★':''}</div>
+      <div class="ss">${p.score}</div>
+    </div>`).join('');
+
+  // Body
+  const body = document.getElementById('q-body');
+
+  if(gs.showFeedback) {
+    // Show answers with highlight
+    const answersHtml = q.a.map((a,i)=>{
+      let cls='answer-btn';
+      if(i===q.c) cls+=' correct';
+      else if(i===gs.lastAnswer&&gs.lastAnswer!==q.c) cls+=' wrong';
+      return `<button class="${cls}" disabled>${a}</button>`;
+    }).join('');
+
+    const whoName = gs.players.find(p=>p.id===gs.feedbackWho)?.name||'?';
+    const nextLabel = (gs.currentQ+1>=totalQ)?'Voir les résultats 🏆':'Question suivante →';
+
+    body.innerHTML = `
+      <div class="answer-grid">${answersHtml}</div>
+      <div class="feedback-box">
+        <div class="fb-icon">${gs.feedbackCorrect?'✅':'❌'}</div>
+        <div class="fb-title ${gs.feedbackCorrect?'ok':'ko'}">
+          ${gs.feedbackCorrect?`+${gs.feedbackPts} pts pour ${whoName} !`:'Raté !'}
+        </div>
+        <div class="fb-expl">${q.expl}</div>
+        ${gs.feedbackCorrect?`<div class="fb-pts">+${gs.feedbackPts} points</div>`:''}
+      </div>
+      ${isMine
+        ? `<button class="btn btn-primary w100" onclick="nextQuestion()">${nextLabel}</button>`
+        : `<p class="waiting-msg">En attente que <strong>${curPlayer.name}</strong> passe à la suite<span class="dot-blink"></span></p>`
+      }`;
+  } else if(isMine) {
+    // My turn — show answers
+    localAnswer = null;
+    body.innerHTML = `<div class="answer-grid">
+      ${q.a.map((a,i)=>`<button class="answer-btn" onclick="selectAnswer(${i})">${a}</button>`).join('')}
+    </div>`;
+  } else {
+    // Not my turn
+    body.innerHTML = `
+      <div class="answer-grid">
+        ${q.a.map(a=>`<button class="answer-btn disabled-wait" disabled>${a}</button>`).join('')}
+      </div>
+      <div class="waiting-msg">
+        C'est le tour de <strong>${curPlayer.name}</strong><span class="dot-blink"></span><br>
+        <span style="font-size:.8rem">Attends qu'il/elle réponde…</span>
+      </div>`;
+  }
+}
+
+async function selectAnswer(idx) {
+  if(localAnswer!==null||!gameRef) return;
+  localAnswer = idx;
+
+  // Disable buttons visually
+  document.querySelectorAll('.answer-btn').forEach(b=>b.disabled=true);
+
+  const q = ALL_Q[gs.qOrder[gs.currentQ]];
+  const ok = idx===q.c;
+  const pts = ok?100:0;
+
+  // Update scores
+  const updatedPlayers = gs.players.map(p=>
+    p.id===myId ? {...p, score:p.score+pts} : p
+  );
+
+  await fbUpdate(gameRef, {
+    players: updatedPlayers,
+    showFeedback: true,
+    feedbackCorrect: ok,
+    feedbackWho: myId,
+    feedbackPts: pts,
+    lastAnswer: idx
+  });
+}
+
+async function nextQuestion() {
+  if(!gameRef) return;
+  const totalQ = Math.min(TOTAL_Q, gs.qOrder.length);
+  const nq = gs.currentQ+1;
+  if(nq>=totalQ){
+    await fbUpdate(gameRef, {phase:'results', showFeedback:false});
+    return;
+  }
+  const np = (gs.currentPlayerIdx+1)%gs.players.length;
+  await fbUpdate(gameRef, {
+    currentQ: nq,
+    currentPlayerIdx: np,
+    showFeedback: false,
+    feedbackCorrect: false,
+    feedbackWho: null,
+    feedbackPts: 0,
+    lastAnswer: null
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//   RESULTS
+// ═══════════════════════════════════════════════════════
+function renderResults() {
+  const ranked = [...gs.players].sort((a,b)=>b.score-a.score);
+  const medals = ['🥇','🥈','🥉'];
+  const podClasses = ['g1','g2','g3'];
+
+  // Podium
+  const podiumEl = document.getElementById('podium');
+  if(ranked.length>=3){
+    const order=[1,0,2];
+    podiumEl.innerHTML = order.map(r=>{
+      if(!ranked[r]) return '';
+      return `<div class="podium-col">
+        <div class="podium-block ${podClasses[r]}">${ranked[r].emoji}</div>
+        <div class="p-medal">${medals[r]}</div>
+        <div class="p-name">${ranked[r].name}</div>
+        <div class="p-pts">${ranked[r].score} pts</div>
+      </div>`;
+    }).join('');
+  } else {
+    podiumEl.innerHTML='';
+  }
+
+  // Full list
+  document.getElementById('result-list').innerHTML = ranked.map((p,i)=>`
+    <div class="result-row">
+      <div class="r-rank">#${i+1}</div>
+      <div class="r-emo">${p.emoji}</div>
+      <div class="r-name">${p.name}${p.id===myId?' (toi)':''}</div>
+      <div class="r-score">${p.score} pts</div>
+    </div>`).join('');
+
+  // Buttons
+  const btnsEl = document.getElementById('results-btns');
+  if(isHost){
+    btnsEl.innerHTML=`<button class="btn btn-primary" onclick="restartGame()">Rejouer 🔄</button>
+      <button class="btn btn-ghost" onclick="location.reload()">Quitter</button>`;
+  } else {
+    btnsEl.innerHTML=`<p class="muted center">En attente que l'hôte relance<span class="dot-blink"></span></p>
+      <button class="btn btn-ghost" onclick="location.reload()">Quitter</button>`;
+  }
+}
+
+async function restartGame() {
+  if(!isHost||!gameRef) return;
+  const qOrder = shuffle([...Array(ALL_Q.length).keys()]).slice(0,TOTAL_Q);
+  const resetPlayers = gs.players.map(p=>({...p,score:0}));
+  await fbUpdate(gameRef, {
+    phase:'game', qOrder, currentQ:0, currentPlayerIdx:0,
+    showFeedback:false, feedbackCorrect:false,
+    feedbackWho:null, feedbackPts:0, lastAnswer:null,
+    players: resetPlayers
+  });
+  localAnswer = null;
+}
+
+// Init Firebase au chargement
+window.addEventListener('DOMContentLoaded', ()=>{ initFirebase(); });
+</script>
+
+</body>
+</html>
