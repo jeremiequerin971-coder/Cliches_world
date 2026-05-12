@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Clichés World 🇮🇳</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, set, get, update, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+const app = initializeApp({
+  apiKey: "AIzaSyAIbBzVRyHLJtWTB0gu8TtWna_slBzD1-M",
+  authDomain: "test-21fba.firebaseapp.com",
+  databaseURL: "https://test-21fba-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "test-21fba",
+  storageBucket: "test-21fba.firebasestorage.app",
+  messagingSenderId: "832861561652",
+  appId: "1:832861561652:web:7bd867c6834458bfd03b61"
+});
+window.__DB__ = { db: getDatabase(app), ref, set, get, update, onValue, off };
+</script>
+
+<style>
+:root{--bg:#07050f;--card:rgba(16,10,36,.97);--saffron:#FF6B00;--amber:#F5A623;--gold:#FFD060;--cream:#FFF3DC;--mint:#00D4A0;--red:#E5484D;--pink:#FF4D8D;--muted:rgba(255,243,220,.35);--r:18px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--cream);font-family:'DM Sans',sans-serif;min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(255,107,0,.09) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(255,77,141,.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
+#app{position:relative;z-index:1;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px 56px;}
+.screen{display:none;width:100%;max-width:520px;flex-direction:column;align-items:center;gap:18px;}
+.screen.on{display:flex;animation:rise .3s cubic-bezier(.22,.68,0,1.2);}
+@keyframes rise{from{opacity:0;transform:translateY(10px) scale(.98);}to{opacity:1;transform:none;}}
+.logo{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,8vw,3.4rem);font-weight:900;background:linear-gradient(135deg,var(--saffron) 0%,var(--amber) 45%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;line-height:1;filter:drop-shadow(0 0 30px rgba(255,107,0,.3));}
+.logo-sub{color:var(--muted);font-size:.72rem;letter-spacing:3.5px;text-transform:uppercase;text-align:center;margin-top:4px;}
+.card{background:var(--card);border:1px solid rgba(255,107,0,.18);border-radius:var(--r);padding:22px 20px;width:100%;box-shadow:0 4px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.03);}
+label{color:var(--amber);font-size:.7rem;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:8px;}
+input[type=text]{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,107,0,.28);border-radius:12px;padding:13px 16px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;outline:none;transition:.2s;-webkit-appearance:none;}
+input[type=text]:focus{border-color:var(--saffron);box-shadow:0 0 0 3px rgba(255,107,0,.14);}
+input[type=text]::placeholder{color:rgba(255,243,220,.22);}
+.btn{font-family:'DM Sans',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:1.2px;text-transform:uppercase;padding:14px 28px;border:none;border-radius:50px;cursor:pointer;transition:.15s;-webkit-appearance:none;}
+.btn:active{transform:scale(.96);}
+.btn-p{background:linear-gradient(135deg,var(--saffron),var(--amber));color:#1a0a00;box-shadow:0 4px 20px rgba(255,107,0,.35);}
+.btn-p:hover{box-shadow:0 6px 28px rgba(255,107,0,.5);}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;transform:none;}
+.btn-g{background:transparent;border:1px solid rgba(255,107,0,.35);color:var(--amber);}
+.btn-g:hover{background:rgba(255,107,0,.08);}
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,0,.22),transparent);}
+.code-wrap{background:linear-gradient(135deg,rgba(255,107,0,.1),rgba(255,166,35,.07));border:1px solid rgba(255,107,0,.35);border-radius:var(--r);padding:20px;text-align:center;width:100%;}
+.code-big{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:var(--gold);letter-spacing:10px;line-height:1;text-shadow:0 0 30px rgba(255,208,96,.4);}
+.code-hint{color:var(--muted);font-size:.78rem;margin-top:8px;}
+.plist{display:flex;flex-direction:column;gap:9px;width:100%;}
+.pitem{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:11px 16px;}
+.pitem.you{border-color:rgba(255,107,0,.4);background:rgba(255,107,0,.07);}
+.pname{flex:1;font-weight:700;font-size:.95rem;}
+.chip{font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;border-radius:50px;padding:3px 9px;border:1px solid;}
+.chip-h{color:var(--saffron);border-color:rgba(255,107,0,.4);}
+.chip-y{color:var(--mint);border-color:rgba(0,212,160,.4);}
+.prog-track{width:100%;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--saffron),var(--gold));border-radius:2px;transition:width .5s ease;}
+.q-top{display:flex;justify-content:space-between;align-items:center;width:100%;flex-wrap:wrap;gap:8px;}
+.q-num{color:var(--saffron);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;}
+.q-status{font-size:.78rem;color:var(--muted);font-weight:600;}
+.av-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);transition:.3s;}
+.av.done{border-color:var(--mint);background:rgba(0,212,160,.15);}
+.cat{color:var(--pink);font-size:.68rem;letter-spacing:2.5px;text-transform:uppercase;text-align:center;font-weight:700;}
+.qtxt{font-family:'Playfair Display',serif;font-size:clamp(1.05rem,3.8vw,1.45rem);color:var(--cream);line-height:1.55;text-align:center;font-weight:700;}
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;}
+@media(max-width:380px){.agrid{grid-template-columns:1fr;}}
+.abtn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:15px 13px 18px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;text-align:left;line-height:1.4;transition:.15s;-webkit-appearance:none;min-height:60px;position:relative;overflow:hidden;}
+.abtn:active:not(:disabled){transform:scale(.97);}
+.abtn:hover:not(:disabled){background:rgba(255,107,0,.12);border-color:var(--saffron);}
+.abtn.selected{background:rgba(255,107,0,.2);border-color:var(--saffron);}
+.abtn.correct{background:rgba(0,212,160,.18);border-color:var(--mint);color:var(--mint);}
+.abtn.wrong{background:rgba(229,72,77,.18);border-color:var(--red);color:#ff8080;}
+.vbar{position:absolute;bottom:0;left:0;height:3px;background:rgba(255,107,0,.5);transition:width .5s ease;}
+.vpct{position:absolute;bottom:5px;right:9px;font-size:.62rem;color:var(--muted);font-weight:700;}
+.score-row{display:flex;gap:8px;flex-wrap:wrap;width:100%;justify-content:center;}
+.spill{flex:1;min-width:68px;max-width:105px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:11px 8px;text-align:center;transition:.3s;}
+.spill.top{border-color:var(--gold);background:rgba(255,208,96,.08);}
+.se{font-size:1.1rem;}.sn{font-size:.69rem;font-weight:700;color:var(--cream);margin:3px 0 1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.ss{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold);font-weight:700;}
+.fb-box{background:rgba(255,255,255,.04);border-radius:14px;padding:16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:9px;width:100%;}
+.fb-ico{font-size:2.4rem;}.fb-t{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;}.fb-t.ok{color:var(--mint);}.fb-t.ko{color:#ff8080;}
+.fb-x{color:var(--muted);font-size:.84rem;line-height:1.65;}
+.wait-msg{text-align:center;padding:10px 0;color:var(--muted);font-size:.88rem;line-height:1.8;}
+.wait-msg strong{color:var(--cream);}
+.dot{display:inline-block;width:7px;height:7px;background:var(--amber);border-radius:50%;animation:blink 1.2s ease-in-out infinite;vertical-align:middle;margin-left:3px;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;width:100%;}
+.pcol{flex:1;max-width:130px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.pblk{width:100%;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
+.pblk.g1{height:120px;background:rgba(255,208,96,.18);border:1px solid rgba(255,208,96,.4);}
+.pblk.g2{height:88px;background:rgba(190,190,200,.12);border:1px solid rgba(190,190,200,.3);}
+.pblk.g3{height:66px;background:rgba(200,120,50,.13);border:1px solid rgba(200,120,50,.3);}
+.pnm{color:var(--cream);font-size:.78rem;font-weight:700;text-align:center;}.ppt{font-family:'Playfair Display',serif;color:var(--gold);font-size:1.05rem;}
+.rlist{display:flex;flex-direction:column;gap:8px;width:100%;}
+.rrow{display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px 16px;}
+.rrk{color:var(--muted);font-size:.78rem;width:18px;}.rrn{flex:1;font-weight:700;font-size:.9rem;}.rrs{font-family:'Playfair Display',serif;color:var(--gold);font-size:1.1rem;}
+.center{text-align:center;}.muted{color:var(--muted);font-size:.82rem;}
+.gap14{display:flex;flex-direction:column;gap:14px;width:100%;}
+.rowb{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.err{color:#ff8080;font-size:.82rem;text-align:center;}.w100{width:100%;}
+</style>
+
+</head>
+<body>
+<div id="app">
+
+  <div id="s-home" class="screen on">
+    <div style="font-size:3rem;margin-top:16px">🇮🇳</div>
+    <div class="logo">Clichés<br>World</div>
+    <p class="logo-sub">Le quiz des stéréotypes de l'Inde</p>
+    <div class="card gap14">
+      <label>Ton prénom</label>
+      <input id="inp-name" type="text" placeholder="Comment tu t'appelles ?" maxlength="14" autocomplete="off">
+      <div id="home-err" class="err" style="display:none"></div>
+    </div>
+    <div class="rowb">
+      <button class="btn btn-p" onclick="doCreate()">Créer une partie</button>
+      <button class="btn btn-g" onclick="show('s-join')">Rejoindre</button>
+    </div>
+    <p class="muted center">20 questions · Tout le monde répond en même temps · Sans chrono</p>
+  </div>
+
+  <div id="s-join" class="screen">
+    <div class="logo" style="font-size:1.9rem">Rejoindre</div>
+    <div class="card gap14">
+      <label>Ton prénom</label>
+      <input id="inp-jname" type="text" placeholder="Prénom" maxlength="14" autocomplete="off">
+      <label style="margin-top:4px">Code de la partie</label>
+      <input id="inp-code" type="text" placeholder="Ex: AB3KZ" maxlength="5"
+        style="letter-spacing:7px;text-transform:uppercase;font-size:1.4rem;text-align:center">
+      <div id="join-err" class="err" style="display:none"></div>
+    </div>
+    <button class="btn btn-p" onclick="doJoin()">Rejoindre →</button>
+    <button class="btn btn-g" onclick="show('s-home')">← Retour</button>
+  </div>
+
+  <div id="s-lobby" class="screen">
+    <div class="logo" style="font-size:1.8rem">Salle d'attente</div>
+    <div class="code-wrap">
+      <div class="muted" style="margin-bottom:6px;font-size:.72rem;letter-spacing:2px;text-transform:uppercase">Code de la partie</div>
+      <div class="code-big" id="disp-code">—</div>
+      <div class="code-hint">Envoie ce code à tes amis · Même lien</div>
+      <button class="btn btn-g" style="margin-top:12px;font-size:.78rem;padding:8px 20px" onclick="copyCode()">
+        <span id="copy-lbl">📋 Copier le code</span>
+      </button>
+    </div>
+    <div class="card gap14">
+      <label>Joueurs (<span id="p-count">1</span>)</label>
+      <div class="plist" id="p-list"></div>
+      <div id="lobby-err" class="err" style="display:none"></div>
+    </div>
+    <button class="btn btn-p" id="btn-start" onclick="hostStart()" disabled>En attente d'un 2e joueur…</button>
+    <p class="muted center">Tout le monde répond en même temps 🔥</p>
+  </div>
+
+  <div id="s-wait" class="screen">
+    <div style="font-size:3rem">⏳</div>
+    <div class="logo" style="font-size:1.8rem">En attente…</div>
+    <div class="card gap14">
+      <label>Joueurs dans la partie</label>
+      <div class="plist" id="p-list-wait"></div>
+    </div>
+    <p class="muted center">L'hôte va lancer la partie<span class="dot"></span></p>
+  </div>
+
+  <div id="s-q" class="screen">
+    <div class="prog-track w100"><div class="prog-fill" id="q-prog"></div></div>
+    <div class="q-top">
+      <div class="q-num" id="q-num">Q 1 / 20</div>
+      <div class="q-status" id="q-status">0 / 0 ont répondu</div>
+    </div>
+    <div class="av-row" id="av-row"></div>
+    <div class="score-row" id="score-row"></div>
+    <div class="card gap14">
+      <div class="cat" id="q-cat"></div>
+      <div class="qtxt" id="q-txt"></div>
+      <div class="divider"></div>
+      <div id="q-body"></div>
+    </div>
+  </div>
+
+  <div id="s-results" class="screen">
+    <div style="font-size:2.4rem">🏆</div>
+    <div class="logo" style="font-size:1.9rem">Résultats</div>
+    <div class="podium" id="podium"></div>
+    <div class="card"><div class="rlist" id="rlist"></div></div>
+    <div class="rowb" id="res-btns"></div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+//  60+ QUESTIONS — INDE CLICHÉS EXTRÊMES
+// ══════════════════════════════════════════════════
+const ALL_Q = [
+
+{cat:"🌶️ CUISINE",q:"Les Indiens mettent du curry dans TOUS leurs plats, y compris le petit-déjeuner.",
+a:["Vrai — le curry est universel","Faux — le petit-déj est souvent doux (idli, dosa, chai)","Vrai — même dans le thé","Faux — le curry n'existe pas vraiment en Inde"],
+c:1,expl:"'Le curry' tel qu'on l'imagine est une invention britannique. En Inde, le petit-déj varie selon les régions : idli-sambar au sud, paratha au nord, poha à l'ouest. Rarement épicé le matin."},
+
+{cat:"🌶️ CUISINE",q:"La cuisine indienne est la plus épicée au monde — aucun pays ne rivalise.",
+a:["Vrai — sans contestation","Faux — le Mexique, la Thaïlande et la Corée rivalisent largement","Vrai — surtout dans le Rajasthan","Faux — les Indiens mangent très peu épicé"],
+c:1,expl:"La Corée (kimchi, tteokbokki), le Mexique (chile habanero) et la Thaïlande rivalisent sérieusement. L'Inde du nord mange souvent peu épicé — c'est le sud et certains États qui atteignent des niveaux extrêmes."},
+
+{cat:"🌶️ CUISINE",q:"Les Indiens ne boivent jamais d'alcool à cause de la religion.",
+a:["Vrai — l'alcool est interdit","Faux — l'Inde est le plus grand marché mondial de whisky","Vrai pour les hindous","Faux — seulement le bœuf est interdit"],
+c:1,expl:"L'Inde est LE plus grand consommateur de whisky au monde ! Royal Stag, Officer's Choice, McDowell's vendent des centaines de millions de bouteilles par an. L'alcool est omniprésent malgré des États prohibitionnistes."},
+
+{cat:"🌶️ CUISINE",q:"Le chai latte Starbucks ressemble au vrai masala chai indien.",
+a:["Oui — même recette de base","Non — c'est une version édulcorée et hypersucrée totalement différente","Oui mais moins épicé","Non — le chai indien n'existe pas, c'est une invention"],
+c:1,expl:"'Chai' signifie simplement 'thé' en hindi. Le vrai masala chai est fort, épicé (gingembre, cardamome, poivre), peu sucré et bouilli avec du lait entier. Le chai latte Starbucks est une caricature sucrée avec du sirop."},
+
+{cat:"🌶️ CUISINE",q:"En Inde, manger avec les mains est considéré comme impoli.",
+a:["Vrai — fourchettes obligatoires","Faux — manger avec la main droite est la norme et culturellement valorisé","Vrai dans les villes","Faux — on mange avec les deux mains"],
+c:1,expl:"Manger avec la main droite est normal et valorisé — on dit que ça améliore le goût en mélangeant les saveurs. La main gauche est considérée impure. Les couverts sont surtout pour les contextes formels."},
+
+{cat:"🌶️ CUISINE",q:"Les vaches sont sacrées donc AUCUN Indien ne mange de bœuf.",
+a:["Vrai — tabou absolu partout","Faux — musulmans, chrétiens et certaines communautés dalits en consomment","Vrai pour les hindous uniquement","Faux — c'est légal dans tous les États"],
+c:1,expl:"Les ~200M de musulmans indiens, les chrétiens et certaines communautés consomment du bœuf. Au Kerala, c'est courant. Dans ~20 États, l'abattage est illégal — mais pas la consommation de bœuf importé."},
+
+{cat:"🌶️ CUISINE",q:"Le biryani est originaire de l'Inde.",
+a:["Vrai — inventé dans l'Empire moghol à Delhi","Faux — vient de Perse/Iran, introduit par les Moghols","Vrai — créé à Hyderabad au XVIe siècle","Faux — c'est un plat arabe ancien"],
+c:1,expl:"Le biryani vient du persan 'birian' (frit avant cuisson). Introduit par les empereurs moghols et marchands persans au XVIe siècle. L'Inde l'a tellement enrichi que l'original est méconnaissable."},
+
+{cat:"🏛️ SOCIÉTÉ",q:"Le système des castes a été aboli en Inde.",
+a:["Vrai — aboli par la Constitution de 1950","Vrai légalement, mais il persiste profondément dans les faits","Faux — il est légal et officiel","Faux — renforcé depuis 2014"],
+c:1,expl:"La Constitution de 1950 interdit la discrimination de caste. Mais dans les faits : mariages intra-caste à ~90%, discrimination à l'emploi, violences contre les Dalits. La loi existe, la réalité est bien différente."},
+
+{cat:"🏛️ SOCIÉTÉ",q:"Les mariages arrangés représentent quel pourcentage des mariages en Inde ?",
+a:["20%","50%","90%","Ils sont interdits depuis 2001"],
+c:2,expl:"~90% des mariages en Inde restent arrangés par les familles. Mais 'arrangé' ne veut pas dire forcé — les jeunes ont souvent leur mot à dire. La distinction entre mariage arrangé et mariage d'amour s'estompe dans les villes."},
+
+{cat:"🏛️ SOCIÉTÉ",q:"Le dot de mariage (la femme qui apporte de l'argent) est illégal en Inde.",
+a:["Faux — tradition légale et obligatoire","Vrai depuis 1961 — mais pratiqué clandestinement avec des milliers de morts","Vrai depuis 2005","Faux — c'est l'homme qui paie"],
+c:1,expl:"Le Dowry Prohibition Act de 1961 l'interdit. Pourtant, des milliers de femmes meurent encore chaque année de 'dot deaths' (brûlées ou tuées quand la famille ne peut payer). La loi est quasi-inappliquée."},
+
+{cat:"🏛️ SOCIÉTÉ",q:"Les Indiens font leurs besoins dans la rue car ils n'ont pas de toilettes.",
+a:["Vrai — 90% sont sans toilettes","Faux — le programme Swachh Bharat a construit 100 millions de toilettes en 10 ans","Vrai uniquement en zones rurales","Faux — problème résolu depuis les années 90"],
+c:1,expl:"Le programme 'Swachh Bharat' (Inde propre, 2014) a construit >100 millions de toilettes. La défécation en plein air est passée de ~60% à ~15%. Défi réel, mais en amélioration spectaculaire."},
+
+{cat:"🏛️ SOCIÉTÉ",q:"Les femmes ne peuvent pas travailler en Inde.",
+a:["Vrai — culturellement interdit","Faux — l'Inde avait une femme PM dès 1966, mais le taux d'emploi féminin reste très bas","Vrai dans les zones rurales","Faux — 70% des femmes travaillent"],
+c:1,expl:"Indira Gandhi était PM dès 1966. Mais ironiquement, le taux d'activité des femmes indiennes (~20%) est parmi les plus bas au monde. La croissance économique a très peu profité aux femmes rurales."},
+
+{cat:"🙏 RELIGION",q:"L'Inde est un pays hindou — l'hindouisme est la religion d'État.",
+a:["Vrai — inscrit dans la Constitution","Faux — l'Inde est une république laïque avec 200M de musulmans","Vrai depuis l'indépendance","Faux — c'est officiellement bouddhiste"],
+c:1,expl:"La Constitution indienne déclare l'Inde 'État laïque'. Il y a ~200M de musulmans (3e communauté mondiale), des millions de chrétiens, sikhs, bouddhistes, jaïns. Le 'tout l'Inde est hindou' est un cliché dangereux."},
+
+{cat:"🙏 RELIGION",q:"Le Kama Sutra est un livre pornographique.",
+a:["Vrai — texte érotique pur","Faux — c'est un traité de philosophie de vie dont seulement ~20% parlent de sexe","Vrai — écrit par un yogi","Faux — il parle uniquement de méditation"],
+c:1,expl:"Le Kama Sutra (IVe siècle, Vātsyāyana) traite de l'amour, des relations, de la vie en société et de la spiritualité. Sur 64 chapitres, ~20% traitent de sexualité. C'est une œuvre philosophique, pas un manuel érotique."},
+
+{cat:"🙏 RELIGION",q:"Se baigner dans le Gange sacré guérit les maladies.",
+a:["Vrai — propriétés antibactériennes prouvées","Faux — le Gange est l'un des fleuves les plus pollués du monde","Vrai — des études scientifiques le confirment","Faux — c'est une pratique interdite par le gouvernement"],
+c:1,expl:"Le Gange est extrêmement pollué : eaux usées, cadavres, déchets industriels. Des études montrent des niveaux de bactéries fécales 100x au-dessus des seuils OMS. Des millions s'y baignent quand même pour des raisons spirituelles."},
+
+{cat:"🙏 RELIGION",q:"Les Indiens prient des milliers de dieux sans logique.",
+a:["Vrai — polythéisme chaotique","Faux — dans de nombreux courants, ces dieux sont des manifestations d'un Absolu unique","Vrai — chaque village a son propre dieu","Faux — l'hindouisme est strictement monothéiste"],
+c:1,expl:"L'hindouisme est complexe. L'Advaita Vedanta considère que Brahman (l'Absolu) est unique, et que Vishnou, Shiva, Kali sont ses manifestations. D'autres courants sont polythéistes. Il n'y a pas de dogme unique."},
+
+{cat:"🎬 BOLLYWOOD",q:"Tous les films indiens ont des scènes de danse et de chansons.",
+a:["Vrai — c'est la loi","Faux — le cinéma indien est ultra-diversifié selon les industries régionales","Vrai pour Bollywood uniquement","Faux — Bollywood n'a plus de danses depuis 2010"],
+c:1,expl:"L'Inde a des dizaines d'industries cinématographiques. Tollywood produit des thrillers, Malayalam cinema des films d'art, Tamil cinema des films réalistes. La comédie musicale est surtout une marque de Bollywood (Mumbai/hindi)."},
+
+{cat:"🎬 BOLLYWOOD",q:"Dans les films indiens, les couples ne peuvent pas s'embrasser à l'écran.",
+a:["Vrai — interdit par la censure","Faux — les baisers sont normaux depuis les années 2000","Vrai — le cinéma indien est pudique","Faux — les scènes explicites sont autorisées"],
+c:1,expl:"Les baisers à l'écran étaient rares jusqu'aux années 90, mais sont devenus banals dans Bollywood. Le CBFC (censure) peut couper les scènes trop explicites, mais les baisers passent normalement."},
+
+{cat:"🎬 BOLLYWOOD",q:"Shah Rukh Khan est parmi les acteurs les plus riches du monde.",
+a:["Faux — acteur régional méconnu","Vrai — fortune estimée à ~700-800 millions de dollars","Vrai — mais seulement en Asie","Faux — les acteurs indiens sont mal payés"],
+c:1,expl:"Shah Rukh Khan est estimé à ~700-800M$, ce qui le place parmi les acteurs les plus riches du monde, devant la plupart des stars hollywoodiennes. 'King Khan' est une marque mondiale."},
+
+{cat:"😅 CLICHÉ EXTRÊME",q:"Tous les Indiens sont forts en maths — c'est génétique.",
+a:["Vrai — avantage génétique prouvé","Faux — c'est le biais de sélection des immigrants indiens très éduqués en Occident","Vrai — système éducatif supérieur","Faux — l'Inde est mauvaise en maths"],
+c:1,expl:"Le stéréotype vient du biais de sélection : les Indiens qui émigrent en Occident sont hautement sélectionnés (visas qualifiés). En Inde même, le niveau en maths est très hétérogène. Ce n'est pas génétique — c'est statistique."},
+
+{cat:"😅 CLICHÉ EXTRÊME",q:"'Namaste' les mains jointes est le salut universel de tous les Indiens.",
+a:["Vrai — universel","Faux — varie énormément : Vanakkam en tamoul, Sat Sri Akal en punjabi, 'Hello' en ville","Vrai mais seulement entre hindous","Faux — les Indiens se font la bise"],
+c:1,expl:"'Namaste' est surtout nord-indien. Au Tamil Nadu : 'Vanakkam'. Les Sikhs : 'Sat Sri Akal'. Les musulmans : 'Assalamualaikum'. En ville, beaucoup disent juste 'Hi'. L'Inde est trop diverse pour un salut universel."},
+
+{cat:"😅 CLICHÉ EXTRÊME",q:"Les Indiens hochent la tête de côté pour dire OUI.",
+a:["Faux — c'est pour dire NON","Vrai — le 'head wobble' signifie oui, compris, d'accord","Faux — ça signifie peut-être","Vrai — mais seulement dans le sud"],
+c:1,expl:"Le 'Indian head wobble' (balancement latéral) est un geste ambigu qui peut signifier oui, compris, d'accord ou 'j'écoute'. Il est souvent mal interprété par les étrangers comme un non ou une hésitation."},
+
+{cat:"😅 CLICHÉ EXTRÊME",q:"Les agents des call centers indiens s'appellent vraiment 'Kevin' ou 'Steve'.",
+a:["Vrai — ce sont leurs vrais noms","Faux — ils utilisent des pseudonymes occidentaux pour mettre les clients à l'aise","Vrai — ils ont changé de prénom légalement","Faux — c'est une légende urbaine"],
+c:1,expl:"Dans les call centers indiens, prendre un prénom occidental est une pratique réelle et documentée — pour faciliter la communication et réduire les frictions. Ça a fait l'objet de nombreuses études sur l'identité culturelle et le colonialisme économique."},
+
+{cat:"😅 CLICHÉ EXTRÊME",q:"Tous les Indiens parlent avec l'accent 'Apu' des Simpson.",
+a:["Vrai — accent universel","Faux — il existe des dizaines d'accents distincts selon la langue maternelle","Vrai pour les habitants du Gujarat","Faux — les Indiens n'ont pas d'accent en anglais"],
+c:1,expl:"L'accent d'Apu (doublé par Hank Azaria, un Américain blanc) a été largement critiqué comme caricatural. L'Inde a des dizaines d'accents : tamoul, bengali, punjabi, malayalam, etc. Chacun est très distinct."},
+
+{cat:"😅 CLICHÉ EXTRÊME",q:"Les vaches sacrées bloquent vraiment la circulation dans les villes indiennes.",
+a:["Cliché — jamais vu en vrai","Réalité — les vaches errantes causent accidents et embouteillages","Cliché — elles restent dans les temples","Réalité — seulement à Varanasi"],
+c:1,expl:"C'est réel ! Les vaches errantes (souvent abandonnées quand elles ne produisent plus de lait) causent des accidents, bloquent la circulation et des morts. C'est un problème politique très sensible en Inde."},
+
+{cat:"💻 TECH",q:"L'Inde a envoyé une mission sur la Lune avant la France.",
+a:["Faux — la France a été sur la Lune en 1969","Vrai — Chandrayaan-3 a atterri sur la Lune en août 2023","Faux — ni l'Inde ni la France n'ont été sur la Lune","Vrai — mais seulement un satellite orbital"],
+c:1,expl:"En août 2023, Chandrayaan-3 a atterri sur le pôle sud de la Lune — une première mondiale ! L'Inde est le 4e pays à alunir. La France n'a jamais eu de mission lunaire. L'ISRO (agence spatiale indienne) est une puissance mondiale."},
+
+{cat:"💻 TECH",q:"Les PDG d'origine indienne dirigent les plus grandes entreprises tech mondiales.",
+a:["Faux — dominance américaine totale","Vrai — Google, Microsoft, Adobe, IBM, Twitter ont tous eu des PDG indiens","Vrai — mais seulement dans les années 2000","Faux — seulement dans les entreprises moyennes"],
+c:1,expl:"Sundar Pichai (Google), Satya Nadella (Microsoft), Shantanu Narayen (Adobe), Arvind Krishna (IBM), Parag Agrawal (ex-Twitter)… L'Inde a produit une part disproportionnée de PDG des plus grandes tech mondiales."},
+
+{cat:"💻 TECH",q:"Le système de paiement UPI indien traite plus de transactions que Visa et Mastercard combinés.",
+a:["Faux — Visa domine largement","Vrai — ~10 milliards de transactions/mois en Inde","Faux — WeChat Pay est devant","Vrai mais seulement en volume, pas en valeur"],
+c:1,expl:"UPI (Unified Payments Interface) traite ~10 milliards de transactions/mois — plus que Visa et Mastercard en volume. Des pays comme Singapour, les Émirats et la France cherchent à adopter ce système révolutionnaire."},
+
+{cat:"🌍 GÉO",q:"Mumbai est la capitale de l'Inde.",
+a:["Vrai — la plus grande ville = capitale","Faux — c'est New Delhi","Vrai — depuis 1947","Faux — c'est Bombay (l'ancien nom de la capitale)"],
+c:1,expl:"New Delhi est la capitale fédérale depuis 1931. Mumbai est la capitale financière. Kolkata (ex-Calcutta) était la capitale sous les Britanniques jusqu'en 1911. L'Inde a plusieurs 'capitales' selon le domaine."},
+
+{cat:"🌍 GÉO",q:"L'Inde et le Pakistan étaient le même pays il y a moins de 80 ans.",
+a:["Faux — toujours été séparés","Vrai — l'Inde britannique a été partitionnée en 1947","Vrai — séparés en 1947 et le Bangladesh en 1971","Faux — le Pakistan a toujours existé"],
+c:1,expl:"La Partition de 1947 est l'un des plus grands déplacements de population de l'histoire : ~15 millions déplacés, ~1-2 millions de morts. L'Inde, le Pakistan, puis le Bangladesh (1971) formaient une seule colonie britannique."},
+
+{cat:"🌍 GÉO",q:"Le mont Everest est en Inde.",
+a:["Vrai — dans les Himalayas indiens","Faux — il est à la frontière Népal/Tibet (Chine)","Vrai — sommet sur territoire indien","Faux — il est au Pakistan"],
+c:1,expl:"L'Everest est à la frontière Népal/Tibet. L'Inde a ses propres géants himalayens : le Kangchenjunga (8586m, 3e plus haut du monde) est à la frontière Inde/Népal."},
+
+{cat:"🐘 ANIMAUX",q:"Les cobras 'dansent' vraiment au son de la flûte des charmeurs.",
+a:["Vrai — ils entendent la musique","Faux — les serpents sont sourds aux sons aériens, ils suivent le mouvement","Vrai — prouvé scientifiquement","Faux — les cobras sont dressés au clicker"],
+c:1,expl:"Les serpents n'ont pas d'oreilles externes. Ils ne 'dansent' pas à la musique mais suivent le mouvement de la flûte (perçu comme une menace) et sentent les vibrations du sol. C'est de la tromperie visuelle."},
+
+{cat:"🐘 ANIMAUX",q:"L'Inde abrite 75% des tigres sauvages du monde.",
+a:["Faux — moins de 10%","Vrai — environ 3000 tigres, soit ~75% de la population mondiale","Vrai — mais ils sont en voie d'extinction","Faux — c'est la Russie"],
+c:1,expl:"L'Inde abrite ~3000 tigres du Bengale — environ 75% de la population mondiale sauvage. Le Project Tiger (1973) est l'un des plus grands succès de conservation de l'histoire. La population a doublé depuis 2006."},
+
+{cat:"📜 HISTOIRE",q:"Le Taj Mahal a été construit par un roi pour sa femme décédée.",
+a:["Faux — c'est un temple hindou","Vrai — Shah Jahan l'a bâti pour Mumtaz Mahal, morte en couches","Vrai — mais elle n'était pas sa vraie femme","Faux — construit par les Britanniques"],
+c:1,expl:"Shah Jahan (empire moghol) a fait construire le Taj Mahal (1632-1653) en mémoire de Mumtaz Mahal, sa 3e épouse, morte en donnant naissance à leur 14e enfant. 20 000 ouvriers ont travaillé 21 ans."},
+
+{cat:"📜 HISTOIRE",q:"Gandhi a reçu le Prix Nobel de la Paix.",
+a:["Vrai — en 1948","Faux — nominé 5 fois, jamais récompensé","Vrai — en 1947","Faux — il refusait tous les prix"],
+c:1,expl:"Malgré 5 nominations, Gandhi n'a jamais reçu le Nobel de la Paix — considéré comme le plus grand regret du comité. En 1948 (année de son assassinat), le comité n'a attribué aucun prix, estimant qu'aucun vivant ne le méritait plus."},
+
+{cat:"📜 HISTOIRE",q:"Les chiffres qu'on utilise (1, 2, 3…) viennent d'Inde, pas d'Arabie.",
+a:["Faux — inventés en Arabie","Vrai — inventés en Inde, transmis en Europe via les Arabes","Faux — invention romaine","Vrai — créés par les mathématiciens de Nalanda"],
+c:1,expl:"Le système décimal et le zéro ont été inventés par des mathématiciens indiens (Brahmagupta, ~628 apr. J.-C.). Les Arabes les ont adoptés et transmis à l'Europe au Moyen Âge. D'où le nom trompeur 'chiffres arabes'."},
+
+{cat:"💰 ÉCONOMIE",q:"L'Inde est un pays pauvre.",
+a:["Vrai — pays sous-développé","Faux — 5e économie mondiale, mais avec des inégalités extrêmes","Vrai — PIB par habitant très faible","Faux — l'Inde n'a plus de pauvreté"],
+c:1,expl:"L'Inde est la 5e économie mondiale (~3500Mds$) mais le PIB par habitant (~2500$/an) reste très bas. Mukesh Ambani possède ~90 milliards de dollars pendant que 800 millions vivent avec moins de 3,65$/jour."},
+
+{cat:"⚽ SPORT",q:"Le sport officiel de l'Inde est le cricket.",
+a:["Vrai — officiellement inscrit","Faux — le sport national officiel est le hockey sur gazon","Vrai — depuis l'indépendance","Faux — c'est le kabaddi"],
+c:1,expl:"Le hockey sur gazon est officiellement le sport national (9 médailles d'or olympiques). Mais culturellement, le cricket est une RELIGION : ~1 milliard de fans, les joueurs sont des dieux vivants, les matchs Pakistan-Inde arrêtent le pays."},
+
+{cat:"🧘 YOGA",q:"Le yoga occidental dans les salles de sport est fidèle au yoga indien original.",
+a:["Vrai — même tradition","Faux — c'est une version ultra-simplifiée et commercialisée","Vrai — approuvé par les gourous","Faux — le yoga occidental n'a aucun lien"],
+c:1,expl:"Le yoga original est un système de 8 membres (éthique, postures, souffle, méditation, etc.). Le yoga occidental se concentre presque exclusivement sur les postures (asanas) — 1/8e du système. Les Indiens trouvent le 'hot yoga' particulièrement absurde."},
+
+{cat:"🗣️ LANGUE",q:"Combien de langues distinctes sont parlées en Inde ?",
+a:["22 langues officielles seulement","122 langues majeures et plus de 1600 dialectes","5 langues principales","Hindi et anglais — c'est tout"],
+c:1,expl:"Le recensement indien recense 122 langues majeures et >1600 dialectes. Un billet de banque indien affiche son montant en 17 langues ! L'Inde est l'une des nations linguistiquement les plus riches du monde."},
+
+{cat:"🗣️ LANGUE",q:"'Jugaad' est un concept indien sans équivalent en français.",
+a:["Faux — ça se traduit par débrouillardise","Vrai — désigne une ingéniosité créative avec peu de moyens, étudié à Harvard","Faux — ça veut dire tromperie","Vrai — mot interdit dans les entreprises indiennes"],
+c:1,expl:"'Jugaad' désigne une solution ingénieuse, rapide et économique — faire beaucoup avec peu. Harvard Business School a étudié ce concept comme modèle d'innovation frugale. Il capture quelque chose que 'débrouillardise' ne traduit pas complètement."},
+
+{cat:"🌍 DIVERS",q:"L'Inde a plus de diplômés en ingénierie que les États-Unis et l'Europe réunis.",
+a:["Faux — États-Unis dominent","Vrai — ~1,5 million d'ingénieurs diplômés par an","Faux — c'est la Chine","Vrai — mais beaucoup sont sous-employés"],
+c:1,expl:"L'Inde produit ~1,5 million d'ingénieurs par an — plus que les USA et l'Europe combinés. Mais beaucoup sont jugés peu employables par les entreprises internationales faute de formation pratique. La quantité ne garantit pas la qualité."},
+
+{cat:"🌍 DIVERS",q:"Le 'Indian Standard Time' (IST) est connu pour être systématiquement en retard.",
+a:["Faux — mythe raciste","Vrai — le concept 'IST = Indian Stretchable Time' est reconnu et auto-dérisoire en Inde","Vrai — décret officiel","Faux — les Indiens sont très ponctuels"],
+c:1,expl:"'IST' ou 'Indian Stretchable Time' est un concept tellement ancré que les Indiens eux-mêmes en plaisantent. Des études montrent que la ponctualité varie énormément selon les contextes (pro vs social) et les régions — Mumbai est notoire pour son retard collectif."},
+
+];
+
+const EMOJIS=["🟠","🔵","🟢","🟣","🔴","🟡","⚪","🟤"];
+const TOTAL_Q=20;
+
+// ═══════════════════
+//  FIREBASE
+// ═══════════════════
+let db,fbRef,fbSet,fbGet,fbUpdate,fbOnValue,fbOff,fbReady=false;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function initFB(){
+  let t=0; while(!window.__DB__&&t++<30) await sleep(200);
+  if(!window.__DB__) return false;
+  ({db,ref:fbRef,set:fbSet,get:fbGet,update:fbUpdate,onValue:fbOnValue,off:fbOff}=window.__DB__);
+  fbReady=true; return true;
+}
+
+// ═══════════════════
+//  STATE
+// ═══════════════════
+let myId=null,myCode=null,gameRef=null,unsub=null,isHost=false,gs=null,localAns=null;
+const uid=()=>'p_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+const genCode=()=>{const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";return Array.from({length:5},()=>c[~~(Math.random()*c.length)]).join("");};
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=~~(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+// ═══════════════════
+//  UI
+// ═══════════════════
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
+function setErr(id,msg){const e=document.getElementById(id);e.textContent=msg;e.style.display=msg?'block':'none';}
+
+// ═══════════════════
+//  CREATE
+// ═══════════════════
+async function doCreate(){
+  const name=document.getElementById('inp-name').value.trim();
+  if(!name){setErr('home-err','Entre ton prénom !');return;}
+  setErr('home-err','');
+  if(!fbReady){const ok=await initFB();if(!ok){setErr('home-err','Erreur Firebase. Vérifie ta connexion.');return;}}
+  myId=uid();isHost=true;myCode=genCode();
+  const qOrder=shuffle([...Array(ALL_Q.length).keys()]).slice(0,TOTAL_Q);
+  const state={phase:'lobby',host:myId,players:[{id:myId,name,emoji:EMOJIS[0],score:0}],qOrder,currentQ:0,answers:{},showFeedback:false};
+  gameRef=fbRef(db,'games2/'+myCode);
+  await fbSet(gameRef,state);gs=state;
+  document.getElementById('disp-code').textContent=myCode;
+  renderLobby();show('s-lobby');subscribe();
+}
+
+// ═══════════════════
+//  JOIN
+// ═══════════════════
+async function doJoin(){
+  const name=document.getElementById('inp-jname').value.trim();
+  const code=document.getElementById('inp-code').value.trim().toUpperCase();
+  if(!name){setErr('join-err','Entre ton prénom !');return;}
+  if(code.length!==5){setErr('join-err','Code à 5 caractères.');return;}
+  setErr('join-err','');
+  if(!fbReady){const ok=await initFB();if(!ok){setErr('join-err','Erreur Firebase.');return;}}
+  const r=fbRef(db,'games2/'+code);
+  const snap=await fbGet(r);
+  if(!snap.exists()){setErr('join-err','Partie introuvable. Vérifie le code.');return;}
+  const s=snap.val();
+  if(s.phase!=='lobby'){setErr('join-err','Partie déjà commencée.');return;}
+  if((s.players||[]).length>=6){setErr('join-err','Partie pleine (6 max).');return;}
+  myId=uid();myCode=code;isHost=false;
+  const emoji=EMOJIS[(s.players||[]).length%EMOJIS.length];
+  const pl=[...(s.players||[]),{id:myId,name,emoji,score:0}];
+  gameRef=r;
+  await fbUpdate(gameRef,{players:pl});
+  gs={...s,players:pl};renderWaiting();show('s-wait');subscribe();
+}
+
+// ═══════════════════
+//  SUBSCRIBE
+// ═══════════════════
+function subscribe(){
+  if(unsub){fbOff(gameRef);unsub=null;}
+  unsub=fbOnValue(gameRef,snap=>{
+    if(!snap.exists()) return;
+    gs=snap.val();syncUI();
+  });
+}
+
+function syncUI(){
+  if(!gs) return;
+  if(gs.phase==='lobby'){if(isHost)renderLobby();else renderWaiting();}
+  else if(gs.phase==='game') renderQuestion();
+  else if(gs.phase==='results'){renderResults();show('s-results');}
+}
+
+// ═══════════════════
+//  LOBBY
+// ═══════════════════
+function renderLobby(){
+  if(!gs) return;
+  const pl=gs.players||[];
+  document.getElementById('p-count').textContent=pl.length;
+  document.getElementById('p-list').innerHTML=pl.map(p=>`
+    <div class="pitem${p.id===myId?' you':''}">
+      <span style="font-size:1.2rem">${p.emoji}</span>
+      <span class="pname">${p.name}</span>
+      ${p.id===gs.host?'<span class="chip chip-h">Hôte</span>':''}
+      ${p.id===myId&&p.id!==gs.host?'<span class="chip chip-y">Toi</span>':''}
+    </div>`).join('');
+  const btn=document.getElementById('btn-start');
+  if(pl.length>=2){btn.disabled=false;btn.textContent=`Lancer avec ${pl.length} joueur${pl.length>1?'s':''} 🔥`;}
+  else{btn.disabled=true;btn.textContent='En attente d\'un 2e joueur…';}
+}
+
+function renderWaiting(){
+  if(!gs) return;
+  const el=document.getElementById('p-list-wait');
+  if(el) el.innerHTML=(gs.players||[]).map(p=>`
+    <div class="pitem${p.id===myId?' you':''}">
+      <span style="font-size:1.2rem">${p.emoji}</span>
+      <span class="pname">${p.name}</span>
+      ${p.id===gs.host?'<span class="chip chip-h">Hôte</span>':''}
+      ${p.id===myId?'<span class="chip chip-y">Toi</span>':''}
+    </div>`).join('');
+}
+
+async function hostStart(){if(!isHost||!gameRef)return;await fbUpdate(gameRef,{phase:'game'});}
+
+function copyCode(){
+  navigator.clipboard.writeText(myCode).then(()=>{
+    document.getElementById('copy-lbl').textContent='✅ Copié !';
+    setTimeout(()=>document.getElementById('copy-lbl').textContent='📋 Copier le code',2000);
+  });
+}
+
+// ═══════════════════
+//  QUESTION — simultané
+// ═══════════════════
+function renderQuestion(){
+  show('s-q');
+  if(!gs||!gs.qOrder) return;
+  const q=ALL_Q[gs.qOrder[gs.currentQ]];
+  const total=Math.min(TOTAL_Q,gs.qOrder.length);
+  const pl=gs.players||[];
+  const answers=gs.answers||{};
+  const myAns=answers[myId];
+  const answeredCount=Object.keys(answers).length;
+
+  // Progress
+  document.getElementById('q-prog').style.width=(gs.currentQ/total*100)+'%';
+  document.getElementById('q-num').textContent=`Q ${gs.currentQ+1} / ${total}`;
+  document.getElementById('q-status').textContent=`${answeredCount} / ${pl.length} ont répondu`;
+
+  // Avatars
+  document.getElementById('av-row').innerHTML=pl.map(p=>`
+    <div class="av${answers[p.id]!==undefined?' done':''}" title="${p.name}">${p.emoji}</div>`).join('');
+
+  // Scores
+  const maxScore=Math.max(...pl.map(p=>p.score),1);
+  document.getElementById('score-row').innerHTML=pl.map(p=>`
+    <div class="spill${p.score===maxScore&&p.score>0?' top':''}">
+      <div class="se">${p.emoji}</div>
+      <div class="sn">${p.name}${p.id===myId?' ★':''}</div>
+      <div class="ss">${p.score}</div>
+    </div>`).join('');
+
+  // Q & cat
+  document.getElementById('q-cat').textContent=q.cat;
+  document.getElementById('q-txt').textContent=q.q;
+
+  const body=document.getElementById('q-body');
+
+  if(gs.showFeedback){
+    // Votes
+    const votes=[0,0,0,0];
+    Object.values(answers).forEach(a=>{if(a>=0&&a<4)votes[a]++;});
+    const totalVotes=Object.values(answers).length||1;
+    const myCorrect=myAns===q.c;
+
+    body.innerHTML=`
+      <div class="agrid">${q.a.map((a,i)=>{
+        let cls='abtn';
+        if(i===q.c) cls+=' correct';
+        else if(myAns===i) cls+=' wrong';
+        const pct=Math.round(votes[i]/totalVotes*100);
+        return `<button class="${cls}" disabled>${a}<span class="vbar" style="width:${pct}%"></span><span class="vpct">${pct}%</span></button>`;
+      }).join('')}</div>
+      <div class="fb-box">
+        <div class="fb-ico">${myCorrect?'✅':'❌'}</div>
+        <div class="fb-t ${myCorrect?'ok':'ko'}">${myCorrect?'Bonne réponse ! +100 pts':'Raté !'}</div>
+        <div class="muted" style="font-size:.77rem;margin:2px 0">✓ <strong style="color:var(--mint)">${q.a[q.c]}</strong></div>
+        <div class="fb-x">${q.expl}</div>
+      </div>
+      ${isHost
+        ?`<button class="btn btn-p w100" onclick="hostNext()">${gs.currentQ+1>=total?'Voir les résultats 🏆':'Question suivante →'}</button>`
+        :`<p class="muted center">L'hôte passe à la suite<span class="dot"></span></p>`}`;
+
+  } else if(myAns!==undefined){
+    const remaining=pl.filter(p=>answers[p.id]===undefined);
+    body.innerHTML=`
+      <div class="agrid">${q.a.map((a,i)=>`<button class="abtn${myAns===i?' selected':''}" disabled>${a}</button>`).join('')}</div>
+      <div class="wait-msg">Tu as répondu ✓<br>
+        ${remaining.length>0?`En attente de : <strong>${remaining.map(p=>p.name).join(', ')}</strong><span class="dot"></span>`:'Tout le monde a répondu<span class="dot"></span>'}
+      </div>`;
+  } else {
+    body.innerHTML=`<div class="agrid">${q.a.map((a,i)=>`
+      <button class="abtn" onclick="selectAnswer(${i})">${a}</button>`).join('')}</div>`;
+  }
+}
+
+async function selectAnswer(idx){
+  if(localAns!==null||!gameRef) return;
+  localAns=idx;
+  document.querySelectorAll('.abtn').forEach(b=>b.disabled=true);
+  const btns=document.querySelectorAll('.abtn');
+  if(btns[idx]) btns[idx].classList.add('selected');
+  // Write answer
+  await fbUpdate(gameRef,{[`answers/${myId}`]:idx});
+  // Check if all answered
+  const snap=await fbGet(gameRef);
+  const s=snap.val();
+  const pl=s.players||[];
+  const ans=s.answers||{};
+  if(pl.every(p=>ans[p.id]!==undefined)){
+    const q=ALL_Q[s.qOrder[s.currentQ]];
+    const updPlayers=pl.map(p=>({...p,score:p.score+(ans[p.id]===q.c?100:0)}));
+    await fbUpdate(gameRef,{players:updPlayers,showFeedback:true});
+  }
+}
+
+async function hostNext(){
+  if(!isHost||!gameRef) return;
+  const snap=await fbGet(gameRef);
+  const s=snap.val();
+  const total=Math.min(TOTAL_Q,(s.qOrder||[]).length);
+  if(s.currentQ+1>=total){await fbUpdate(gameRef,{phase:'results',showFeedback:false});return;}
+  await fbUpdate(gameRef,{currentQ:s.currentQ+1,answers:{},showFeedback:false});
+  localAns=null;
+}
+
+// ═══════════════════
+//  RESULTS
+// ═══════════════════
+function renderResults(){
+  const pl=(gs.players||[]).slice().sort((a,b)=>b.score-a.score);
+  const medals=['🥇','🥈','🥉'],cls=['g1','g2','g3'];
+  const pod=document.getElementById('podium');
+  if(pl.length>=3) pod.innerHTML=[1,0,2].map(r=>!pl[r]?'':`
+    <div class="pcol">
+      <div class="pblk ${cls[r]}">${pl[r].emoji}</div>
+      <div style="font-size:1.2rem">${medals[r]}</div>
+      <div class="pnm">${pl[r].name}</div>
+      <div class="ppt">${pl[r].score} pts</div>
+    </div>`).join('');
+  else pod.innerHTML='';
+  document.getElementById('rlist').innerHTML=pl.map((p,i)=>`
+    <div class="rrow">
+      <div class="rrk">#${i+1}</div>
+      <div style="font-size:1.1rem">${p.emoji}</div>
+      <div class="rrn">${p.name}${p.id===myId?' (toi)':''}</div>
+      <div class="rrs">${p.score} pts</div>
+    </div>`).join('');
+  document.getElementById('res-btns').innerHTML=isHost
+    ?`<button class="btn btn-p" onclick="hostRestart()">Rejouer 🔄</button><button class="btn btn-g" onclick="location.reload()">Quitter</button>`
+    :`<p class="muted center">En attente que l'hôte relance<span class="dot"></span></p><button class="btn btn-g" onclick="location.reload()">Quitter</button>`;
+}
+
+async function hostRestart(){
+  if(!isHost||!gameRef) return;
+  const snap=await fbGet(gameRef);const s=snap.val();
+  const qOrder=shuffle([...Array(ALL_Q.length).keys()]).slice(0,TOTAL_Q);
+  await fbUpdate(gameRef,{phase:'game',qOrder,currentQ:0,answers:{},showFeedback:false,players:(s.players||[]).map(p=>({...p,score:0}))});
+  localAns=null;
+}
+
+window.addEventListener('DOMContentLoaded',()=>initFB());
+</script>
+
+</body>
+</html>
